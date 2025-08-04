@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"; // Eğer `cn` fonksiyonu varsa
-import { FC, MouseEventHandler, ReactNode } from "react";
+import { MouseEventHandler } from "react";
 
 interface IconButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
