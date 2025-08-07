@@ -9,7 +9,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        disabled={disabled} // ✅ Artık disabled tanımlı
+        disabled={disabled}
         {...props}
         className={cn(
           `
