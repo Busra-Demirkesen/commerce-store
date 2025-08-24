@@ -22,7 +22,7 @@ const HomePage = async ({ searchParams: searchParamsPromise }: HomePageProps) =>
   const billboard = billboards.length > 0 ? billboards[0] : null; // Get the first billboard, or null if none
 
   const products = await getProducts({
-    isFeatured: true,
+    // isFeatured: true, // Temporarily removed to debug product visibility
     searchTerm: typeof searchParams.searchTerm === 'string' ? searchParams.searchTerm : undefined,
   });
   return (
