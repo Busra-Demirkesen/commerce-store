@@ -9,9 +9,7 @@ import SearchBar from "@/components/search-bar";
 export const revalidate = 0;
 
 interface HomePageProps {
-  searchParams: {
-    searchTerm?: string;
-  }
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
 const HomePage = async ({ searchParams }: HomePageProps) => {
