@@ -9,6 +9,7 @@ interface Query {
   colorId?: string;
   sizeId?: string;
   isFeatured?: boolean;
+  searchTerm?: string; // Add searchTerm here
 }
 
 const getProducts = async (query:Query) : Promise<Product[]> => {
@@ -20,6 +21,7 @@ const getProducts = async (query:Query) : Promise<Product[]> => {
       sizeId:query.sizeId,
       categoryId:query.categoryId,
       isFeatured:query.isFeatured,
+      searchTerm: query.searchTerm, // Pass searchTerm to the API
      }
   })
     const response = await fetch(url);
