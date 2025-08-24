@@ -25,6 +25,9 @@ const HomePage = async ({ searchParams: searchParamsPromise }: HomePageProps) =>
     // isFeatured: true, // Temporarily removed to debug product visibility
     searchTerm: typeof searchParams.searchTerm === 'string' ? searchParams.searchTerm : undefined,
   });
+
+  console.log("Products fetched in HomePage:", products); // Add this line to log products
+
   return (
     <Container>
       <div className="space-y-10 pb-10">
