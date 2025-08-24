@@ -1,35 +1,38 @@
 import React from "react";
 import Container from "@/components/ui/container";
 import { Billboard } from "@/components/billboard";
-import getBillboards from "@/actions/get-billboard";
+import getBillboards from "@/actions/get-billboard"; // <<< Burayı düzeltiyoruz, get-billboard olmalı
 import getProducts from "@/actions/get-products";
 import ProductList from "@/components/product-list";
-import SearchBar from "@/components/search-bar"; // Import SearchBar
+import SearchBar from "@/components/search-bar";
 
 export const revalidate = 0;
 
 interface HomePageProps {
-  searchParams: { // Add searchParams to props
+  searchParams: {
     searchTerm?: string;
   }
 }
 
 const HomePage = async ({ searchParams }: HomePageProps) => {
+  // getBillboards artık ID almadan tüm billboard'ları çekecek şekilde güncellendi
+  const billboards = await getBillboards(); // <<< ID'yi kaldırdık
 
-  const billboard = await getBillboards("efc8cdf5-ca62-42b9-857c-6f8baeb40740");
+  // Eğer birden fazla billboard varsa ilkini al, yoksa null olsun
+  const billboard = billboards.length > 0 ? billboards[0] : null; // <<< Liste kontrolü ekledik
 
-  const products = await getProducts({ isFeatured: true, searchTerm: searchParams.searchTerm }); // Pass searchTerm
+  const products = await getProducts({ isFeatured: true, searchTerm: searchParams.searchTerm });
+
   return (
     <Container>
       <div className="space-y-10 pb-10">
-        <Billboard data={billboard} />
+        {billboard && <Billboard data={billboard} />} {/* <<< Null kontrolü ekledik */}
         <div className="flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8">
-          <SearchBar /> {/* Add SearchBar here */}
+          <SearchBar />
           <ProductList title="Featured Products" items={products} />
         </div>
       </div>
     </Container>
-
   )
 }
 export default HomePage;
