@@ -51,7 +51,7 @@ const Summary = () => {
       });
 
       if (result.error) {
-        toast.error(result.error.message);
+        toast.error(result.error.message || "Something went wrong during checkout."); // Provide a fallback message
       }
     } else {
       window.location.href = response.data.url; // Fallback if Stripe.js fails to load
