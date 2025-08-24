@@ -9,23 +9,22 @@ import SearchBar from "@/components/search-bar";
 export const revalidate = 0;
 
 interface HomePageProps {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>; // Explicitly define searchParams as a Promise
 }
 
-const HomePage = async ({ searchParams }: HomePageProps) => {
-  // getBillboards artık ID almadan tüm billboard'ları çekecek şekilde güncellendi
-  const billboards = await getBillboards(); // <<< ID'yi kaldırdık
+const HomePage = async ({ searchParams: searchParamsPromise }: HomePageProps) => {
 
-  // Eğer birden fazla billboard varsa ilkini al, yoksa null olsun
-  const billboard = billboards.length > 0 ? billboards[0] : null; // <<< Liste kontrolü ekledik
+  const searchParams = await searchParamsPromise; // Await the promise
+
+  const billboards = await getBillboards(); // Call without ID, get all billboards
+  const billboard = billboards.length > 0 ? billboards[0] : null; // Get the first billboard, or null if none
 
   const products = await getProducts({
     isFeatured: true,
     searchTerm: typeof searchParams.searchTerm === 'string' ? searchParams.searchTerm : undefined,
   });
-
   return (
     <Container>
       <div className="space-y-10 pb-10">
