@@ -7,6 +7,9 @@ import Button from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import toast from "react-hot-toast";
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!); // Load Stripe with your publishable key
 
 const Summary = () => {
   const searchParams = useSearchParams();
@@ -34,6 +37,7 @@ const Summary = () => {
 
   const onCheckout = async () => {
   try {
+    const stripe = await stripePromise;
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
       {
@@ -41,7 +45,18 @@ const Summary = () => {
       }
     );
 
-    window.location.href = response.data.url;
+    if (stripe) {
+      const result = await stripe.redirectToCheckout({
+        sessionId: response.data.id,
+      });
+
+      if (result.error) {
+        toast.error(result.error.message);
+      }
+    } else {
+      window.location.href = response.data.url; // Fallback if Stripe.js fails to load
+    }
+
   } catch (error) {
     console.error("Checkout error:", error);
     toast.error("Checkout failed!");
