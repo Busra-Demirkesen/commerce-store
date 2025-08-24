@@ -29,13 +29,13 @@ const SearchBar = () => {
       <form onSubmit={onSubmit} className="flex-grow flex items-center space-x-2">
         <Input
           type="text"
-          placeholder="Ürün ara..."
+          placeholder="Search..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="flex-grow"
         />
         <Button type="submit">
-          Ara
+          Search
         </Button>
       </form>
     </div>
