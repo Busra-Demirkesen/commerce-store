@@ -9,7 +9,9 @@ import SearchBar from "@/components/search-bar";
 export const revalidate = 0;
 
 interface HomePageProps {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: {
+    [key: string]: string | string[] | undefined;
+  };
 }
 
 const HomePage = async ({ searchParams }: HomePageProps) => {
@@ -19,7 +21,10 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
   // Eğer birden fazla billboard varsa ilkini al, yoksa null olsun
   const billboard = billboards.length > 0 ? billboards[0] : null; // <<< Liste kontrolü ekledik
 
-  const products = await getProducts({ isFeatured: true, searchTerm: searchParams.searchTerm });
+  const products = await getProducts({
+    isFeatured: true,
+    searchTerm: typeof searchParams.searchTerm === 'string' ? searchParams.searchTerm : undefined,
+  });
 
   return (
     <Container>
