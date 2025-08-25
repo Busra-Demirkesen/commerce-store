@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
 import { useSearch } from "@/providers/search-modal-provider"; // Import useSearch hook
 
-interface NavbarActionsProps {
-  // onSearchOpen: () => void; // No longer needed as we use useSearch hook
-}
+// interface NavbarActionsProps {
+//   // onSearchOpen: () => void; // No longer needed as we use useSearch hook
+// }
 
-const NavbarActions: React.FC<NavbarActionsProps> = () => {
+const NavbarActions = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown
   const { onOpen } = useSearch(); // Use onOpen from useSearch hook

@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+// import axios from "axios"; // Removed unused import
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 

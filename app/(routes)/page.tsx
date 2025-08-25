@@ -4,7 +4,7 @@ import { Billboard } from "@/components/billboard";
 import getBillboards from "@/actions/get-billboard"; // <<< Burayı düzeltiyoruz, get-billboard olmalı
 import getProducts from "@/actions/get-products";
 import ProductList from "@/components/product-list";
-import SearchBar from "@/components/search-bar";
+// import SearchBar from "@/components/search-bar"; // Removed unused import
 
 export const revalidate = 0;
 
