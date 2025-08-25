@@ -1,6 +1,6 @@
-import { clerkMiddleware } from '@clerk/nextjs/server'; // Use clerkMiddleware
+import { clerkMiddleware } from '@clerk/nextjs/server';
 
-export default clerkMiddleware(); // Call clerkMiddleware directly
+export default clerkMiddleware(); // Call clerkMiddleware directly without options
 
 export const config = {
   matcher: [
