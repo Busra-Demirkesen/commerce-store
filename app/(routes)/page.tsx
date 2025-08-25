@@ -22,18 +22,18 @@ const HomePage = async ({ searchParams: searchParamsPromise }: HomePageProps) =>
   const billboard = billboards.length > 0 ? billboards[0] : null; // Get the first billboard, or null if none
 
   const products = await getProducts({
-    // isFeatured: true, // Temporarily removed to debug product visibility
+    isFeatured: true, // Re-enable isFeatured filter
     searchTerm: typeof searchParams.searchTerm === 'string' ? searchParams.searchTerm : undefined,
   });
 
-  console.log("Products fetched in HomePage:", products); // Add this line to log products
+  // console.log("Products fetched in HomePage:", products); // Remove console.log
 
   return (
     <Container>
       <div className="space-y-10 pb-10">
         {billboard && <Billboard data={billboard} />} {/* <<< Null kontrolü ekledik */}
         <div className="flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8">
-          <SearchBar />
+          {/* <SearchBar /> */} {/* Remove SearchBar from here */}
           <ProductList title="Featured Products" items={products} />
         </div>
       </div>

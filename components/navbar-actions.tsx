@@ -1,15 +1,20 @@
 "use client";
 import Button from "@/components/ui/button";
 import useCart from "@/hooks/use-cart";
-import { ShoppingBag, User } from "lucide-react";
+import { ShoppingBag, User, Search } from "lucide-react"; // Import Search icon
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { useSearch } from "@/providers/search-modal-provider"; // Import useSearch hook
 
+interface NavbarActionsProps {
+  // onSearchOpen: () => void; // No longer needed as we use useSearch hook
+}
 
-const NavbarActions = () => {
+const NavbarActions: React.FC<NavbarActionsProps> = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown
+  const { onOpen } = useSearch(); // Use onOpen from useSearch hook
 
   useEffect(() => {
     setIsMounted(true);
@@ -24,6 +29,11 @@ const cart = useCart();
   }
   return (
     <div className="ml-auto flex items-center gap-x-4">
+      {/* Search Icon Button */}
+      <Button onClick={onOpen} className="flex items-center rounded-full bg-black px-2 py-2 hover:bg-gray-800">
+        <Search size={20} color="white" />
+      </Button>
+      {/* Cart Button */}
       <Button onClick={()=> router.push("/cart")} className="flex items-center rounded-full bg-black px-4 py-2">
         <ShoppingBag size={20} color="white" />
         <span className="ml-2 text-sm font-medium text-white">

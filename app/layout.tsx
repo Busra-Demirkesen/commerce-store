@@ -8,6 +8,7 @@ import Navbar from "@/components/navbar";
 import ModalProvider from "@/providers/modal-provider";
 import ToastProvider from "@/providers/toast-provider";
 import { ClerkProvider } from '@clerk/nextjs';
+import { SearchProvider } from '@/providers/search-modal-provider'; // Import SearchProvider
 
 const font = Urbanist({
   subsets: ["latin"],
@@ -25,15 +26,17 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={font.className}>
-          <ModalProvider/>
-          <ToastProvider/>
-          <Navbar/>
-          {children}
-          <Footer />
-        </body>
-      </html>
+      <SearchProvider> {/* Wrap with SearchProvider */}
+        <html lang="en">
+          <body className={font.className}>
+            <ModalProvider/>
+            <ToastProvider/>
+            <Navbar/>
+            {children}
+            <Footer />
+          </body>
+        </html>
+      </SearchProvider>
     </ClerkProvider>
   );
 }
