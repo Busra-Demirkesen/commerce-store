@@ -36,7 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
   }
 
   return (
-    <div className="fixed w-full z-50 p-4 flex items-center justify-between" style={{ top: '6rem' }}>
+    <div className="fixed w-full z-50 p-4 flex items-center justify-between" style={{ top: '4rem' }}>
       <form onSubmit={onSubmit} className="flex-grow flex items-center space-x-2">
         <Input
           type="text"
