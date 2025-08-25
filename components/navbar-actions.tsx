@@ -30,7 +30,7 @@ const cart = useCart();
   return (
     <div className="ml-auto flex items-center gap-x-4">
       {/* Search Icon Button */}
-      <Button onClick={onOpen} className="flex items-center rounded-full p-2">
+      <Button onClick={onOpen} className="flex items-center rounded-full p-2 bg-transparent hover:bg-transparent">
         <Search size={20} color="black" />
       </Button>
       {/* Cart Button */}
