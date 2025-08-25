@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/ui/button";
 import useCart from "@/hooks/use-cart";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
@@ -9,6 +9,8 @@ import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@cl
 
 const NavbarActions = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -28,17 +30,31 @@ const cart = useCart();
           {cart.items.length}
         </span>
       </Button>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-      <SignedOut>
-        <SignInButton mode="modal">
-          <Button className="bg-gray-200 text-black px-4 py-2 rounded-full">Sign In</Button>
-        </SignInButton>
-        <SignUpButton mode="modal">
-          <Button className="bg-blue-500 text-white px-4 py-2 rounded-full ml-2">Sign Up</Button>
-        </SignUpButton>
-      </SignedOut>
+
+      <div className="relative">
+        <SignedIn>
+          <UserButton afterSignOutUrl="/" />
+        </SignedIn>
+        <SignedOut>
+          <Button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="flex items-center rounded-full bg-black px-4 py-2 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            aria-expanded={isDropdownOpen ? "true" : "false"}
+          >
+            <User size={20} color="white" /> {/* User icon */}
+          </Button>
+          {isDropdownOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+              <SignInButton mode="modal">
+                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign In</button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Up</button>
+              </SignUpButton>
+            </div>
+          )}
+        </SignedOut>
+      </div>
     </div>
   );
 };
