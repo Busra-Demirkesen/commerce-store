@@ -7,9 +7,9 @@ import Button from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import toast from "react-hot-toast";
-import { loadStripe } from '@stripe/stripe-js';
+// import { loadStripe } from '@stripe/stripe-js'; // No longer needed
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!); // Load Stripe with your publishable key
+// const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!); // No longer needed
 
 const Summary = () => {
   const searchParams = useSearchParams();
@@ -36,32 +36,24 @@ const Summary = () => {
   );
 
   const onCheckout = async () => {
-  try {
-    const stripe = await stripePromise;
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
-      {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         productIds: items.map((item) => item.id),
-      }
-    );
+      }),
+    });
 
-    if (stripe) {
-      const result = await stripe.redirectToCheckout({
-        sessionId: response.data.id,
-      });
+    const data = await response.json();
 
-      if (result.error) {
-        toast.error(result.error.message || "Something went wrong during checkout."); // Provide a fallback message
-      }
+    if (response.ok) {
+      window.location.href = data.url; // Backend must return a URL for Stripe Checkout
     } else {
-      window.location.href = response.data.url; // Fallback if Stripe.js fails to load
+      toast.error(data.error || "Checkout failed!");
     }
-
-  } catch (error) {
-    console.error("Checkout error:", error);
-    toast.error("Checkout failed!");
-  }
-};
+  };
 
 
   return (
@@ -88,4 +80,5 @@ const Summary = () => {
     </div>
   );
 };
+
 export default Summary;
