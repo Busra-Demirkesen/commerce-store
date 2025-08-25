@@ -30,8 +30,8 @@ const cart = useCart();
   return (
     <div className="ml-auto flex items-center gap-x-4">
       {/* Search Icon Button */}
-      <Button onClick={onOpen} className="flex items-center rounded-full bg-black px-2 py-2 hover:bg-gray-800">
-        <Search size={20} color="white" />
+      <Button onClick={onOpen} className="flex items-center rounded-full p-2">
+        <Search size={20} color="black" />
       </Button>
       {/* Cart Button */}
       <Button onClick={()=> router.push("/cart")} className="flex items-center rounded-full bg-black px-4 py-2">
