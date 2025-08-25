@@ -4,8 +4,7 @@ import useCart from "@/hooks/use-cart";
 import { ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-
+import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
 
 
 const NavbarActions = () => {
@@ -29,6 +28,17 @@ const cart = useCart();
           {cart.items.length}
         </span>
       </Button>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
+      <SignedOut>
+        <SignInButton mode="modal">
+          <Button className="bg-gray-200 text-black px-4 py-2 rounded-full">Sign In</Button>
+        </SignInButton>
+        <SignUpButton mode="modal">
+          <Button className="bg-blue-500 text-white px-4 py-2 rounded-full ml-2">Sign Up</Button>
+        </SignUpButton>
+      </SignedOut>
     </div>
   );
 };
