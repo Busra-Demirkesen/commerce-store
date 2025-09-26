@@ -41,10 +41,13 @@ const Info: React.FC<InfoProps> = ({ data }) => {
       </div>
 
       <div className='mt-10 flex items-center gap-x-3'>
-        <Button onClick={onAddToCart} className='flex items-center gap-x-2'>
+        <Button onClick={onAddToCart} className='flex items-center gap-x-2' disabled={data.stock === 0}>
           Add to Cart
           <ShoppingCart/>
         </Button>
+        {data.stock === 0 && (
+          <p className="ml-4 text-red-500 font-semibold">ÜRÜN TÜKENDİ</p>
+        )}
       </div>
     </div>
   )

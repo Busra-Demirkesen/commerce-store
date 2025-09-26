@@ -20,13 +20,20 @@ const getProducts = async (query:Query) : Promise<Product[]> => {
       colorId: query.colorId,
       sizeId:query.sizeId,
       categoryId:query.categoryId,
-      isFeatured:query.isFeatured,
+      isFeatured:query.isFeatured, // Yorum satırı kaldırıldı
       searchTerm: query.searchTerm, // Pass searchTerm to the API
      }
   })
+
+  // console.log("API'ye gönderilen URL:", url); // Yorum satırı yapıldı
+
     const response = await fetch(url);
 
-    return response.json();
+  // console.log("API yanıt durumu:", response.ok, response.status); // Yorum satırı yapıldı
+  // const responseText = await response.text(); // Yorum satırı yapıldı
+  // console.log("API'den gelen ham yanıt:", responseText); // Yorum satırı yapıldı
+
+    return response.json(); // Eski haline getirildi
 }
 
 export default getProducts;

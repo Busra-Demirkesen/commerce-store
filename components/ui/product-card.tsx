@@ -4,7 +4,7 @@ import { Product } from "@/types";
 import Image from "next/image";
 import IconButton from "@/components/ui/icon-button";
 import { Expand, ShoppingCart } from "lucide-react";
-import { FC, MouseEventHandler } from "react";
+import { FC, MouseEventHandler, useEffect, useState, useCallback } from "react";
 import Currency from "@/components/ui/currency";
 import { useRouter } from "next/navigation";
 import usePreviewModal from "@/hooks/use-preview-modal";
@@ -16,24 +16,23 @@ interface ProductCardProps {
 
 const ProductCard: FC<ProductCardProps> = ({ data }) => {
 
-
   const cart = useCart();
   const previewModal = usePreviewModal();
   const router = useRouter();
+  
   const handleClick = () => {
     router.push(`/product/${data?.id}`);
   };
 
-  const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
+  const onAddToCart: MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.stopPropagation();
     cart.addItem(data);
-  };
+  }, [cart, data]);
 
-
-    const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
+  const onPreview: MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.stopPropagation();
     previewModal.onOpen(data);
-  };
+  }, [previewModal, data]);
 
   return (
     <div
@@ -47,6 +46,11 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
           fill
           className="object-cover rounded-md"
         />
+        {data.stock === 0 && (
+          <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center rounded-md">
+            <span className="text-white text-xl font-bold">ÜRÜN TÜKENDİ</span>
+          </div>
+        )}
 
         <div className="opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-5 z-10">
           <div className="flex gap-x-6 justify-center">
@@ -58,6 +62,7 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
             <IconButton
               onClick={onAddToCart}
               icon={<ShoppingCart size={20} className="text-gray-600" />}
+              disabled={data.stock === 0} // Sepete ekle butonunu stok 0 ise pasif yap
             />
           </div>
         </div>

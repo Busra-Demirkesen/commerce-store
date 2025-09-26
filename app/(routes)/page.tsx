@@ -26,8 +26,6 @@ const HomePage = async ({ searchParams: searchParamsPromise }: HomePageProps) =>
     searchTerm: typeof searchParams.searchTerm === 'string' ? searchParams.searchTerm : undefined,
   });
 
-  // console.log("Products fetched in HomePage:", products); // Remove console.log
-
   return (
     <Container>
       <div className="space-y-10 pb-10">
