@@ -46,7 +46,7 @@ const Info: React.FC<InfoProps> = ({ data }) => {
           <ShoppingCart/>
         </Button>
         {data.stock === 0 && (
-          <p className="ml-4 text-red-500 font-semibold">ÜRÜN TÜKENDİ</p>
+          <p className="ml-4 text-red-500 font-semibold">OUT OF STOCK</p>
         )}
       </div>
     </div>

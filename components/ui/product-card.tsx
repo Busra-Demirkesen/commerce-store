@@ -48,7 +48,7 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
         />
         {data.stock === 0 && (
           <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center rounded-md">
-            <span className="text-white text-xl font-bold">ÜRÜN TÜKENDİ</span>
+            <span className="text-white text-xl font-bold">OUT OF STOCK</span>
           </div>
         )}
 
