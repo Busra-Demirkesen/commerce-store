@@ -5,7 +5,7 @@ import { ShoppingBag, User, Search } from "lucide-react"; // Import Search icon
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
-// import { useSearch } from "@/providers/search-modal-provider"; // useSearch hook kaldırıldı
+import { useSearch } from "@/providers/search-modal-provider"; // Import useSearch hook
 
 // interface NavbarActionsProps {
 //   // onSearchOpen: () => void; // No longer needed as we use useSearch hook
