@@ -3,10 +3,11 @@ import Container from "./ui/container";
 import MainNav from "./main-nav";
 import getCategories from "@/actions/get-categories";
 import NavbarActions from "./navbar-actions";
+// import SearchBar from "./search-bar"; // SearchBar'ı import ediyoruz
 // import { Search } from "lucide-react"; // Search icon'u import ediyoruz
 // import { useSearch } from "@/providers/search-modal-provider"; // useSearch hook'unu import ediyoruz
 // import SearchBar from "./search-bar";
-import SearchIconClient from "./search-icon-client"; // Yeni oluşturacağımız SearchIconClient bileşenini import ediyoruz
+// import SearchIconClient from "./search-icon-client"; // Yeni oluşturacağımız SearchIconClient bileşenini import ediyoruz
 
 export const revalidate = 0; // Disable revalidation for this component
 
@@ -24,16 +25,14 @@ const Navbar = async () =>{
                     <p className="font-bold text-xl text-end ">TECHNO TREND</p>
                 </Link>
                 <MainNav data={categories} />
-                <div className="relative flex items-center gap-x-2 ml-6">
-                    {/* <button onClick={onOpen} className="flex items-center rounded-full p-2 bg-gray-100 hover:bg-gray-200">
+                {/* <div className="relative flex items-center gap-x-2 ml-6">
+                    <button onClick={onOpen} className="flex items-center rounded-full p-2 bg-gray-100 hover:bg-gray-200">
                         <Search size={20} color="black" />
-                    </button> */}
-                    <SearchIconClient /> {/* SearchIconClient bileşenini buraya ekledik */}
+                    </button>
+                    <SearchIconClient />
                     {/* <SearchBar isOpen={isOpen} onClose={() => {}} /> */}
-                </div>
-                <div className="ml-auto flex items-center gap-x-4">
-                  <NavbarActions/>
-                </div>
+                {/* </div> */}
+                <NavbarActions/>
                 </div>
             </Container>
         </div>

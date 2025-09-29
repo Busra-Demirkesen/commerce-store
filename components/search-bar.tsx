@@ -32,11 +32,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
     router.push(url);
   };
 
+  if (!isOpen) {
+    return null;
+  }
+
   return (
     <div className={cn(
-      "absolute top-1/2 -translate-y-1/2 right-full z-50 p-2 flex items-center space-x-2 border rounded-full bg-gray-100 transition-all duration-300",
-      isOpen ? "opacity-100 visible -translate-x-full" : "opacity-0 invisible",
-      "w-[10rem] lg:w-[15rem]"
+      "fixed w-full z-50 p-4 flex items-center justify-between", // Original styling
+      isOpen ? "top-16 opacity-100 visible" : "-top-full opacity-0 invisible", // Animate from top
+      "bg-white shadow-lg rounded-lg transition-all duration-300"
     )}>
       <form onSubmit={onSubmit} className="flex-grow flex items-center space-x-2">
         <Input
@@ -44,15 +48,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
           placeholder="Search..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-grow bg-transparent border-none focus:ring-0 text-black placeholder-gray-500 py-1"
+          className="flex-grow border-gray-300 rounded-md"
         />
-        <Button type="submit" className="bg-transparent text-gray-600 px-2 py-1 rounded-full hover:bg-gray-200">
+        <Button type="submit" className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
           Search
         </Button>
       </form>
-      <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-200">
-        <X size={16} color="black" />
-      </button>
+      <Button onClick={onClose} className="ml-4 p-2 bg-transparent border-none">
+        <X size={20} color="black" />
+      </Button>
     </div>
   );
 }
