@@ -34,16 +34,16 @@ const SearchBar: React.FC = () => {
   // }
 
   return (
-    <div className="flex items-center space-x-2 rounded-full px-4 py-2 bg-black">
+    <div className="flex items-center space-x-2 border rounded-full px-4 py-2 bg-gray-100 w-auto">
       <form onSubmit={onSubmit} className="flex-grow flex items-center space-x-2">
         <Input
           type="text"
           placeholder="Search..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-grow bg-transparent border-none focus:ring-0 text-white placeholder-gray-400"
+          className="flex-grow bg-transparent border-none focus:ring-0 text-black placeholder-gray-500"
         />
-        <Button type="submit" className="bg-transparent text-white px-2 py-1 rounded-full hover:bg-gray-800">
+        <Button type="submit" className="bg-transparent text-gray-600 px-2 py-1 rounded-full hover:bg-gray-200">
           Search
         </Button>
       </form>
