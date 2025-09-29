@@ -7,6 +7,7 @@ import { X } from 'lucide-react'; // Import X icon for close button
 
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input'; // Assuming you have an Input component or will create one
+import { cn } from '@/lib/utils'; // `cn` fonksiyonunu içeri aktarıyoruz
 
 interface SearchBarProps {
   isOpen: boolean;
@@ -36,7 +37,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
   }
 
   return (
-    <div className="fixed w-full z-50 p-4 flex items-center justify-between" style={{ top: '4rem' }}>
+    <div className={cn(
+      "fixed z-50 p-4 flex items-center justify-between transition-all duration-300",
+      isOpen ? "right-4 opacity-100 visible" : "-right-full opacity-0 invisible", // Animate from right
+      "w-80 bg-white shadow-lg rounded-lg"
+    )} style={{ top: '4rem' }}>
       <form onSubmit={onSubmit} className="flex-grow flex items-center space-x-2">
         <Input
           type="text"
