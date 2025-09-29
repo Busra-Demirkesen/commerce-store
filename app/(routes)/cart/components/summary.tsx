@@ -36,22 +36,28 @@ const Summary = () => {
   );
 
   const onCheckout = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        productIds: items.map((item) => item.id),
-      }),
-    });
+    try {
+      console.log("Checkout API URL:", `${process.env.NEXT_PUBLIC_API_URL}/checkout`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productIds: items.map((item) => item.id),
+        }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      window.location.href = data.url; // Backend must return a URL for Stripe Checkout
-    } else {
-      toast.error(data.error || "Checkout failed!");
+      if (response.ok) {
+        window.location.href = data.url; // Backend must return a URL for Stripe Checkout
+      } else {
+        toast.error(data.error || "Checkout failed!");
+      }
+    } catch (error) {
+      console.error("Checkout sırasında ağ hatası:", error);
+      toast.error("Ağ hatası oluştu. Lütfen tekrar deneyin.");
     }
   };
 
