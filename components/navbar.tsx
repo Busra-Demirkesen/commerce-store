@@ -3,12 +3,17 @@ import Container from "./ui/container";
 import MainNav from "./main-nav";
 import getCategories from "@/actions/get-categories";
 import NavbarActions from "./navbar-actions";
-import SearchBar from "./search-bar"; // SearchBar'ı import ediyoruz
+import { Search } from "lucide-react"; // Search icon'u import ediyoruz
+import { useSearch } from "@/providers/search-modal-provider"; // useSearch hook'unu import ediyoruz
+import SearchBar from "./search-bar";
+
 export const revalidate = 0; // Disable revalidation for this component
 
 const Navbar = async () =>{
 
     const categories = await getCategories();
+    const { onOpen, isOpen } = useSearch(); // useSearch hook'unu kullanıyoruz
+
     return(
         <>
         <div className="border-b ">
@@ -18,7 +23,12 @@ const Navbar = async () =>{
                     <p className="font-bold text-xl text-end ">TECHNO TREND</p>
                 </Link>
                 <MainNav data={categories} />
-                {/* <SearchBar /> */}
+                <div className="relative flex items-center gap-x-2 ml-6">
+                    <button onClick={onOpen} className="flex items-center rounded-full p-2 bg-gray-100 hover:bg-gray-200">
+                        <Search size={20} color="black" />
+                    </button>
+                    <SearchBar isOpen={isOpen} onClose={() => {}} /> {/* SearchBar'ı buraya ekledik */}
+                </div>
                 <div className="ml-auto flex items-center gap-x-4">
                   <NavbarActions/>
                 </div>
