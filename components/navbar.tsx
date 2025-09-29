@@ -18,8 +18,8 @@ const Navbar = async () =>{
                     <p className="font-bold text-xl text-end ">TECHNO TREND</p>
                 </Link>
                 <MainNav data={categories} />
+                {/* <SearchBar /> */}
                 <div className="ml-auto flex items-center gap-x-4">
-                  <SearchBar /> {/* SearchBar'ı buraya ekliyoruz */}
                   <NavbarActions/>
                 </div>
                 </div>
