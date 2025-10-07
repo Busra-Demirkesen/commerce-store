@@ -8,6 +8,21 @@
 ## ✨ Overview
 The **Commerce Storefront** delivers a seamless, fast, and responsive shopping experience for customers. It is built with the latest front-end technologies to maximize SEO and performance. It integrates directly with the Commerce Admin Dashboard to display real-time product data, manage shopping carts, and handle secure payment processing via Stripe.
 
+---
+<img width="1572" height="758" alt="e-commerce project screenshot1" src="https://github.com/user-attachments/assets/ac1d0584-e7d3-42ed-ad19-ffab35c6c28a" />
+
+
+<img width="1575" height="755" alt="e-commerce project screenshot2" src="https://github.com/user-attachments/assets/e138e8da-f061-4609-bb51-60dcb5706798" />
+
+
+<img width="1567" height="754" alt="e-commerce project screenshot3" src="https://github.com/user-attachments/assets/027d3af0-7f9f-4986-b6de-b8965f71f4e9" />
+
+
+
+
+
+
+
 ### 🔑 Key Features
 - ⚡ **Speed & Performance:** Optimized with Next.js Server Components and Image Optimization for superior loading times and SEO.
 - 🔎 **Product Browsing:** Features category-based filtering, advanced searching, and dynamic sorting.
