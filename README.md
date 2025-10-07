@@ -60,10 +60,13 @@ npm run dev
 # http://localhost:3000
 
 ```
+---
+## 🔗 Related Links
 
-🔗 Related Links
-⚙️ Admin Dashboard Repo: Commerce Admin Dashboard
-🌐 Admin Live Demo: Live Demo
-🛒 Storefront Live Demo: Live Demo
+⚙️ Admin Dashboard Repo: [Commerce Admin Dashboard](https://github.com/Busra-Demirkesen/commerce-admin.git)
+🌐 Admin Live Demo: [Live Demo](https://commerce-admin-roan.vercel.app/8a2df2f4-9303-4feb-8caf-d0869eb9e6fd/products/new)
+🛒 Storefront Live Demo: [Live Demo](https://commerce-store-hazel.vercel.app/)
 
-⭐ "Code is like humor. When you have to explain it, it's bad."
+---
+
+> ⭐ "Code is like humor. When you have to explain it, it’s bad."
