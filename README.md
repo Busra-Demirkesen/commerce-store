@@ -58,3 +58,12 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY= (Your public Stripe key)
 # 4️⃣ Start the development server
 npm run dev
 # http://localhost:3000
+
+```
+
+🔗 Related Links
+⚙️ Admin Dashboard Repo: Commerce Admin Dashboard
+🌐 Admin Live Demo: Live Demo
+🛒 Storefront Live Demo: Live Demo
+
+⭐ "Code is like humor. When you have to explain it, it's bad."
