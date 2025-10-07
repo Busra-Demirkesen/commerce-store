@@ -2,8 +2,11 @@ import Link from "next/link";
 import Container from "./ui/container";
 import MobileNav from "./mobile-nav";
 import NavCenter from "./nav-center";
+import MainNav from "./main-nav";
+import SearchSlot from "./search-slot";
 import getCategories from "@/actions/get-categories";
 import NavbarActions from "./navbar-actions";
+import DesktopActionsOrdered from "./desktop-actions-ordered";
 // import SearchBar from "./search-bar"; // SearchBar'ı import ediyoruz
 // import { Search } from "lucide-react"; // Search icon'u import ediyoruz
 // import { useSearch } from "@/providers/search-modal-provider"; // useSearch hook'unu import ediyoruz
@@ -34,15 +37,19 @@ const Navbar = async () =>{
                     </div>
                 </div>
 
-                {/* Desktop layout */}
-                <div className="relative px-4 sm:px-6 lg:px-8 h-16 items-center hidden lg:flex">
-                    <Link href="/" className="ml-4 lg:ml-0 gap-x-2">
+                {/* Desktop layout: logo left, categories next, search between categories and actions, actions right */}
+                <div className="relative px-4 sm:px-6 lg:px-8 h-16 items-center hidden lg:flex w-full">
+                    <Link href="/" className="ml-4 lg:ml-0 gap-x-2 shrink-0">
                         <p className="font-bold text-xl">techno trend</p>
                     </Link>
-                    <div className="flex-1 flex justify-center">
-                        <NavCenter data={categories} title="techno trend" />
+                    <div className="ml-6 shrink-0">
+                        <MainNav data={categories} />
                     </div>
-                    <NavbarActions/>
+                    {/* Search bar expands here when search is open */}
+                    <SearchSlot />
+                    <div className="ml-auto">
+                        <DesktopActionsOrdered />
+                    </div>
                 </div>
             </Container>
         </div>
