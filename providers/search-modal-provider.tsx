@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, createContext, useContext, ReactNode } from 'react';
-import SearchBar from '@/components/search-bar';
 
 interface SearchContextType {
   isOpen: boolean;
@@ -20,7 +19,6 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
   return (
     <SearchContext.Provider value={{ isOpen, onOpen, onClose }}>
       {children}
-      <SearchBar isOpen={isOpen} onClose={onClose} />
     </SearchContext.Provider>
   );
 };

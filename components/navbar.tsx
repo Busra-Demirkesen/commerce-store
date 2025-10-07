@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Container from "./ui/container";
-import MainNav from "./main-nav";
 import MobileNav from "./mobile-nav";
+import NavCenter from "./nav-center";
 import getCategories from "@/actions/get-categories";
 import NavbarActions from "./navbar-actions";
 // import SearchBar from "./search-bar"; // SearchBar'ı import ediyoruz
@@ -27,9 +27,7 @@ const Navbar = async () =>{
                         <MobileNav data={categories} />
                     </div>
                     <div className="flex items-center justify-center">
-                        <Link href="/" className="gap-x-2">
-                            <p className="font-bold text-xl text-center">techno trend</p>
-                        </Link>
+                        <NavCenter data={categories} title="techno trend" />
                     </div>
                     <div className="flex items-center justify-end">
                         <NavbarActions/>
@@ -41,7 +39,9 @@ const Navbar = async () =>{
                     <Link href="/" className="ml-4 lg:ml-0 gap-x-2">
                         <p className="font-bold text-xl">techno trend</p>
                     </Link>
-                    <MainNav data={categories} />
+                    <div className="flex-1 flex justify-center">
+                        <NavCenter data={categories} title="techno trend" />
+                    </div>
                     <NavbarActions/>
                 </div>
             </Container>

@@ -88,13 +88,12 @@ const MobileNav: React.FC<MobileNavProps> = ({ data }) => {
                       </button>
                       {profileOpen && (
                         <div id="mobile-profile-menu" className="px-4 pb-3">
-                          <div className="mt-2 flex items-center gap-3">
+                          <div className="mt-2 flex flex-col">
                             <SignInButton mode="modal">
-                              <span className="text-sm text-blue-600 hover:underline cursor-pointer">Sign in</span>
+                              <span className="block py-1 text-sm text-gray-700 cursor-pointer">Sign in</span>
                             </SignInButton>
-                            <span className="text-gray-300">•</span>
                             <SignUpButton mode="modal">
-                              <span className="text-sm text-blue-600 hover:underline cursor-pointer">Sign up</span>
+                              <span className="block py-1 text-sm text-gray-700 cursor-pointer">Sign up</span>
                             </SignUpButton>
                           </div>
                         </div>
