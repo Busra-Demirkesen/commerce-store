@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import MainNav from "./main-nav";
-import InlineSearch from "./inline-search";
-import { useSearch } from "@/providers/search-modal-provider";
 
 interface Category {
   id: string;
@@ -16,15 +14,6 @@ interface NavCenterProps {
 }
 
 const NavCenter: React.FC<NavCenterProps> = ({ data, title }) => {
-  const { isOpen, onClose } = useSearch();
-
-  if (isOpen) {
-    return (
-      <div className="w-full">
-        <InlineSearch onClose={onClose} />
-      </div>
-    );
-  }
 
   return (
     <>

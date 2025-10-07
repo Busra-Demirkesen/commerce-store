@@ -4,6 +4,7 @@ import MobileNav from "./mobile-nav";
 import NavCenter from "./nav-center";
 import MainNav from "./main-nav";
 import SearchSlot from "./search-slot";
+import MobileSearchBelow from "./mobile-search-below";
 import getCategories from "@/actions/get-categories";
 import NavbarActions from "./navbar-actions";
 import DesktopActionsOrdered from "./desktop-actions-ordered";
@@ -36,6 +37,8 @@ const Navbar = async () =>{
                         <NavbarActions/>
                     </div>
                 </div>
+                {/* Mobile/Tablet: search bar below navbar when open */}
+                <MobileSearchBelow />
 
                 {/* Desktop layout: logo left, categories next, search between categories and actions, actions right */}
                 <div className="relative px-4 sm:px-6 lg:px-8 h-16 items-center hidden lg:flex w-full">
