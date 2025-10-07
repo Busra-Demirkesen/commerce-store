@@ -44,7 +44,7 @@ const Navbar = async () =>{
                 {/* Desktop layout: logo left, categories next, search between categories and actions, actions right */}
                 <div className="relative px-4 sm:px-6 lg:px-8 h-16 items-center hidden lg:flex w-full">
                     <Link href="/" className="ml-4 lg:ml-0 gap-x-2 shrink-0 flex items-center" aria-label="Home">
-                        <Image src="/logo (2).png" alt="Techno Trend" width={180} height={50} priority className="h-11 w-auto" />
+                        <Image src="/logo (2).png" alt="Techno Trend" width={200} height={75} priority className="h-11 w-auto" />
                     </Link>
                     <div className="ml-6 shrink-0">
                         <MainNav data={categories} />
