@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Container from "./ui/container";
 import MainNav from "./main-nav";
+import MobileNav from "./mobile-nav";
 import getCategories from "@/actions/get-categories";
 import NavbarActions from "./navbar-actions";
 // import SearchBar from "./search-bar"; // SearchBar'ı import ediyoruz
@@ -20,19 +21,28 @@ const Navbar = async () =>{
         <>
         <div className="border-b ">
             <Container>
-                <div className="realative px-4 sm:px-6 lg:px-8 flex h-16 items-center">
-                <Link href="/" className="ml-4 lg:ml-0 gap-x-2">
-                    <p className="font-bold text-xl text-end ">TECHNO TREND</p>
-                </Link>
-                <MainNav data={categories} />
-                {/* <div className="relative flex items-center gap-x-2 ml-6">
-                    <button onClick={onOpen} className="flex items-center rounded-full p-2 bg-gray-100 hover:bg-gray-200">
-                        <Search size={20} color="black" />
-                    </button>
-                    <SearchIconClient />
-                    {/* <SearchBar isOpen={isOpen} onClose={() => {}} /> */}
-                {/* </div> */}
-                <NavbarActions/>
+                {/* Mobile / Tablet layout: hamburger left, title centered, actions right */}
+                <div className="relative px-4 sm:px-6 lg:px-8 h-16 items-center grid grid-cols-3 md:grid-cols-3 lg:hidden">
+                    <div className="flex items-center">
+                        <MobileNav data={categories} />
+                    </div>
+                    <div className="flex items-center justify-center">
+                        <Link href="/" className="gap-x-2">
+                            <p className="font-bold text-xl text-center">techno trend</p>
+                        </Link>
+                    </div>
+                    <div className="flex items-center justify-end">
+                        <NavbarActions/>
+                    </div>
+                </div>
+
+                {/* Desktop layout */}
+                <div className="relative px-4 sm:px-6 lg:px-8 h-16 items-center hidden lg:flex">
+                    <Link href="/" className="ml-4 lg:ml-0 gap-x-2">
+                        <p className="font-bold text-xl">techno trend</p>
+                    </Link>
+                    <MainNav data={categories} />
+                    <NavbarActions/>
                 </div>
             </Container>
         </div>

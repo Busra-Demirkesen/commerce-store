@@ -28,7 +28,7 @@ const cart = useCart();
     return null;
   }
   return (
-    <div className="ml-auto flex items-center gap-x-4">
+    <div className="ml-auto flex items-center gap-x-3">
       {/* Search Icon Button */}
       <Button onClick={onOpen} className="flex items-center rounded-full p-2 bg-transparent hover:bg-transparent">
         <Search size={20} color="black" />
@@ -41,7 +41,7 @@ const cart = useCart();
         </span>
       </Button>
 
-      <div className="relative">
+      <div className="relative hidden lg:block">
         <SignedIn>
           <UserButton afterSignOutUrl="/" />
         </SignedIn>
@@ -54,13 +54,16 @@ const cart = useCart();
             <User size={20} color="white" /> {/* User icon */}
           </Button>
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-              <SignInButton mode="modal">
-                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign In</button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Up</button>
-              </SignUpButton>
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
+              <div className="px-4 py-1 flex items-center gap-3">
+                <SignInButton mode="modal">
+                  <span className="text-sm text-blue-600 hover:underline cursor-pointer">Sign in</span>
+                </SignInButton>
+                <span className="text-gray-300">•</span>
+                <SignUpButton mode="modal">
+                  <span className="text-sm text-blue-600 hover:underline cursor-pointer">Sign up</span>
+                </SignUpButton>
+              </div>
             </div>
           )}
         </SignedOut>
