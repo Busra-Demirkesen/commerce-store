@@ -3,8 +3,9 @@
 import { Product } from '@/types';
 import Currency from '@/components/ui/currency';
 import  Button  from '@/components/ui/button';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Minus, Plus } from 'lucide-react';
 import useCart from '@/hooks/use-cart';
+import { useMemo, useState } from 'react';
 
 interface InfoProps {
   data: Product;
@@ -12,9 +13,12 @@ interface InfoProps {
 
 const Info: React.FC<InfoProps> = ({ data }) => {
   const cart = useCart();
+  const [qty, setQty] = useState(1);
+  const maxQty = useMemo(() => (typeof data.stock === 'number' && data.stock > 0 ? data.stock : undefined), [data.stock]);
+
   const onAddToCart = () => {
-    cart.addItem(data);
-  }
+    cart.addItems(data, qty);
+  };
   return (
     <div>
       <h1 className='text-3xl font-bold text-gray-900'>{data.name}</h1>
@@ -40,8 +44,32 @@ const Info: React.FC<InfoProps> = ({ data }) => {
         </div>
       </div>
 
-      <div className='mt-10 flex items-center gap-x-3'>
-        <Button onClick={onAddToCart} className='flex items-center gap-x-2' disabled={data.stock === 0} data-testid="add-to-cart">
+      <div className='mt-10 flex items-center gap-x-4 gap-y-3 flex-wrap'>
+        <div className='flex items-center gap-3'>
+          <span className='font-semibold text-black'>Quantity:</span>
+          <div className='flex items-center border border-gray-300 rounded-full overflow-hidden'>
+            <button
+              type='button'
+              onClick={() => setQty((q) => Math.max(1, q - 1))}
+              className='px-3 py-2 hover:bg-gray-100 disabled:opacity-50'
+              aria-label='decrease quantity'
+              disabled={qty <= 1}
+            >
+              <Minus size={16} />
+            </button>
+            <span className='w-10 text-center select-none'>{qty}</span>
+            <button
+              type='button'
+              onClick={() => setQty((q) => (maxQty ? Math.min(maxQty, q + 1) : q + 1))}
+              className='px-3 py-2 hover:bg-gray-100 disabled:opacity-50'
+              aria-label='increase quantity'
+              disabled={!!maxQty && qty >= maxQty}
+            >
+              <Plus size={16} />
+            </button>
+          </div>
+        </div>
+        <Button onClick={onAddToCart} className='flex items-center gap-x-2 mt-2 sm:mt-0 mb-2' disabled={data.stock === 0} data-testid="add-to-cart">
           Add to Cart
           <ShoppingCart/>
         </Button>

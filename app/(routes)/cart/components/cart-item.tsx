@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { X, Minus, Plus } from "lucide-react";
 
-import IconButton from "@/components/ui/icon-button";
 import Currency from "@/components/ui/currency";
 import useCart, { CartLine } from "@/hooks/use-cart";
 
@@ -25,31 +24,52 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
       </div>
 
       <div className="relative ml-4 flex flex-1 flex-col justify-between sm:ml-6">
-        <div className="absolute z-10 right-0 top-0">
-          <IconButton onClick={onRemove} icon={<X size={15} />} ariaLabel="remove-item" />
-        </div>
+        <button
+          onClick={onRemove}
+          aria-label="remove-item"
+          className="absolute z-10 right-0 top-0 rounded-full p-2 hover:bg-gray-100"
+        >
+          <X size={15} />
+        </button>
         <div className="relative pr-9 sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
           <div className="flex justify-between">
             <p className="text-lg font-semibold text-black">{data.name}</p>
           </div>
-          <div className="mt-1 flex text-sm items-center gap-4 flex-wrap">
-            <p className="text-gray-500">{data.color.name}</p>
-            <p className="text-gray-500 ml-4 border-l border-gray-200 pl-4">{data.size.name}</p>
-            <div className="ml-auto flex items-center gap-2">
-              <IconButton
+
+          {/* Quantity moved up just below the title */}
+          <div className="mt-2 flex items-center gap-3">
+            <span className="text-sm font-semibold text-black">Quantity:</span>
+            <div className="flex items-center rounded-full border border-gray-300 overflow-hidden">
+              <button
+                type="button"
                 onClick={() => cart.decrement(data.id)}
-                icon={<Minus size={14} className="text-gray-700" />}
-                ariaLabel="decrement"
-              />
-              <span className="w-8 text-center select-none">{quantity}</span>
-              <IconButton
+                className="px-3 py-1.5 hover:bg-gray-100"
+                aria-label="decrease quantity"
+              >
+                <Minus size={14} />
+              </button>
+              <span className="min-w-8 px-2 text-center select-none">{quantity}</span>
+              <button
+                type="button"
                 onClick={() => cart.increment(data.id)}
-                icon={<Plus size={14} className="text-gray-700" />}
-                ariaLabel="increment"
-              />
+                className="px-3 py-1.5 hover:bg-gray-100"
+                aria-label="increase quantity"
+              >
+                <Plus size={14} />
+              </button>
             </div>
           </div>
-          <Currency value={data.price * quantity} />
+
+          {/* Attributes row */}
+          <div className="mt-2 flex text-sm items-center gap-4 flex-wrap">
+            <p className="text-gray-500">{data.color.name}</p>
+            <p className="text-gray-500 ml-4 border-l border-gray-200 pl-4">{data.size.name}</p>
+          </div>
+
+          {/* Line total */}
+          <div className="mt-2">
+            <Currency value={data.price * quantity} />
+          </div>
         </div>
       </div>
     </li>

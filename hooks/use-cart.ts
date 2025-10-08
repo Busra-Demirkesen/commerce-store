@@ -11,6 +11,7 @@ export interface CartLine {
 interface CartStore {
   items: CartLine[];
   addItem: (data: Product) => void;
+  addItems: (data: Product, qty: number) => void;
   removeItem: (id: string) => void;
   removeAll: () => void;
   increment: (id: string) => void;
@@ -24,15 +25,20 @@ const useCart = create(
       items: [],
 
       addItem: (data: Product) => {
+        get().addItems(data, 1);
+      },
+
+      addItems: (data: Product, qty: number) => {
+        const quantity = Math.max(1, Math.floor(Number(qty) || 1));
         const items = get().items.slice();
         const idx = items.findIndex((l) => l.product.id === data.id);
         if (idx !== -1) {
-          items[idx] = { ...items[idx], quantity: items[idx].quantity + 1 };
+          items[idx] = { ...items[idx], quantity: items[idx].quantity + quantity };
           set({ items });
           toast.success("Quantity updated");
           return;
         }
-        items.push({ product: data, quantity: 1 });
+        items.push({ product: data, quantity });
         set({ items });
         toast.success("Item added to cart");
       },
