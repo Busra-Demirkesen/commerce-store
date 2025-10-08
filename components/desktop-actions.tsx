@@ -56,7 +56,7 @@ const DesktopActions = () => {
       {}
       <Button onClick={() => router.push("/cart")} className="flex items-center rounded-full bg-black px-4 py-2">
         <ShoppingBag size={20} color="white" />
-        <span className="ml-2 text-sm font-medium text-white">{cart.items.length}</span>
+        <span className="ml-2 text-sm font-medium text-white">{cart.items.reduce((s, l) => s + ('quantity' in l ? (l as any).quantity : 1), 0)}</span>
       </Button>
 
       {}
@@ -68,4 +68,3 @@ const DesktopActions = () => {
 };
 
 export default DesktopActions;
-

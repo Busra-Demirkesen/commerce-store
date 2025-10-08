@@ -68,6 +68,25 @@ const useCart = create(
     }),
     {
       name: "cart-storage",
+      version: 2,
+      migrate: (persisted: any, version: number) => {
+        if (!persisted || !Array.isArray(persisted.items)) return persisted;
+        // If old shape: items are Products (no product field), wrap with quantity 1
+        if (persisted.items.length > 0 && !persisted.items[0]?.product) {
+          return {
+            ...persisted,
+            items: persisted.items.map((p: any) => ({ product: p, quantity: 1 })),
+          };
+        }
+        // Ensure quantity exists
+        return {
+          ...persisted,
+          items: persisted.items.map((l: any) => ({
+            product: l.product ?? l,
+            quantity: typeof l.quantity === 'number' && l.quantity > 0 ? l.quantity : 1,
+          })),
+        };
+      },
       storage: createJSONStorage(() => localStorage),
     }
   )
