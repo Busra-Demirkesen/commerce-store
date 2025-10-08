@@ -39,11 +39,9 @@ export default function SearchHero({ categories }: Props) {
   return (
     <section className="mt-6 rounded-2xl bg-white text-gray-900 border border-gray-200 shadow-sm p-6 md:p-8">
       <div className="max-w-3xl mx-auto text-center">
-      <div className="inline-flex items-center gap-2 rounded-full border border-gray-300 px-3 py-1 text-xs font-medium text-gray-600 mx-auto">
-          FEATURED PRODUCTS
-      </div>
-        <h2 className="mt-4 text-2xl md:text-3xl font-bold">Search products</h2>
-        <p className="mt-2 text-sm text-gray-600">
+        
+        <h2 className="hidden sm:block mt-4 text-2xl md:text-3xl font-bold">Search products</h2>
+        <p className="hidden sm:block mt-2 text-sm text-gray-600">
           What are you looking for? Search by name, brand, or category.
         </p>
 
@@ -68,7 +66,7 @@ export default function SearchHero({ categories }: Props) {
           </div>
         </div>
 
-        <div className="mt-4 text-sm text-gray-700">What are you looking for?</div>
+        <div className="hidden sm:block mt-4 text-sm text-gray-700">What are you looking for?</div>
         <div className="mt-2 flex flex-wrap gap-2 justify-center">
           {categories.map((c) => (
             <Link

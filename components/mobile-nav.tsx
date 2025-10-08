@@ -17,6 +17,7 @@ interface MobileNavProps {
 const MobileNav: React.FC<MobileNavProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
 
   return (
     <>
@@ -52,19 +53,59 @@ const MobileNav: React.FC<MobileNavProps> = ({ data }) => {
             <div className="flex h-full flex-col">
               <nav className="p-2 grow overflow-y-auto">
                 <ul>
-                  {data.map((cat) => (
-                    <li key={cat.id}>
-                      <Link
-                        href={`/category/${cat.id}`}
-                        onClick={() => setOpen(false)}
-                        className="block rounded-md px-4 py-3 text-sm hover:bg-gray-50"
-                      >
-                        {cat.name}
-                      </Link>
-                    </li>
-                  ))}
+                  {/* Categories accordion */}
+                  <li>
+                    <button
+                      className="flex w-full items-center justify-between px-4 py-3 text-left text-sm hover:bg-gray-50"
+                      onClick={() => setCategoriesOpen((v) => !v)}
+                      aria-expanded={categoriesOpen}
+                      aria-controls="mobile-categories-menu"
+                    >
+                      <span className="font-medium">Categories</span>
+                      <ChevronRight
+                        size={18}
+                        className={categoriesOpen ? "transform rotate-90 transition-transform" : "transition-transform"}
+                      />
+                    </button>
+                    {categoriesOpen && (
+                      <div id="mobile-categories-menu" className="px-2 pb-2">
+                        <ul className="mt-1">
+                          {data.map((cat) => (
+                            <li key={cat.id}>
+                              <Link
+                                href={`/category/${cat.id}`}
+                                onClick={() => setOpen(false)}
+                                className="block rounded-md px-4 py-2 text-sm hover:bg-gray-50"
+                              >
+                                {cat.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </li>
 
-                  {}
+                  {/* Standalone links */}
+                  <li>
+                    <Link
+                      href="/about"
+                      onClick={() => setOpen(false)}
+                      className="block rounded-md px-4 py-3 text-sm hover:bg-gray-50"
+                    >
+                      About
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/contact"
+                      onClick={() => setOpen(false)}
+                      className="block rounded-md px-4 py-3 text-sm hover:bg-gray-50"
+                    >
+                      Contact
+                    </Link>
+                  </li>
+
                   <li className="mt-1 border-t" />
                   <li>
                     <SignedIn>
