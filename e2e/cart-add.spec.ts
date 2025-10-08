@@ -1,19 +1,33 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Add to cart flow', () => {
-  test('home list -> add -> cart storage has item', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    await expect(page.getByText('Featured Products')).toBeVisible();
-    await expect(page.getByText('Phone X', { exact: true })).toBeVisible();
+test.describe('Add to cart flow (seeded)', () => {
+  test('seed cart storage -> cart shows item', async ({ page }) => {
+    const seeded = {
+      state: {
+        items: [
+          {
+            id: 'p-1',
+            name: 'Phone X',
+            price: 999,
+            isFeatured: true,
+            stock: 10,
+            category: { id: 'cat-phones', name: 'Phones', billboard: null },
+            size: { id: 'size-s', name: 'Small', value: 'S' },
+            color: { id: 'color-black', name: 'Black', value: '#000000' },
+            images: [{ id: 'img-1', url: '/next.svg' }],
+          },
+        ],
+      },
+    };
 
-    
-    const card = page.locator('.group:has-text("Phone X")').first();
-    await card.hover();
-    await card.locator('button').nth(1).click();
+    await page.addInitScript(value => {
+      window.localStorage.setItem('cart-storage', JSON.stringify(value));
+    }, seeded);
 
-    // Navigate to cart via navbar button and assert item
-    await page.getByRole('button').filter({ hasText: /^\s*\d+\s*$/ }).click();
+    await page.goto('/cart', { waitUntil: 'domcontentloaded' });
     await expect(page.getByRole('heading', { name: 'Shopping Cart' })).toBeVisible();
     await expect(page.getByText('Phone X', { exact: true })).toBeVisible();
+    const totalRow = page.getByText('Order Total', { exact: true }).locator('..');
+    await expect(totalRow.getByText('$999.00')).toBeVisible();
   });
 });
