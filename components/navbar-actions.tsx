@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/ui/button";
 import useCart from "@/hooks/use-cart";
-import { ShoppingBag, User, Search } from "lucide-react"; 
+import { ShoppingBag, User, Heart } from "lucide-react"; 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
@@ -29,10 +29,19 @@ const cart = useCart();
   }
   return (
     <div className="ml-auto flex items-center gap-x-3">
-      {}
-      <Button onClick={onOpen} className="flex items-center rounded-full p-2 bg-transparent hover:bg-transparent">
-        <Search size={20} color="black" />
-      </Button>
+      {/* Favorites button */}
+      <SignedIn>
+        <Button onClick={()=> router.push("/favorites")} className="flex items-center rounded-full bg-black px-4 py-2">
+          <Heart size={20} color="white" />
+        </Button>
+      </SignedIn>
+      <SignedOut>
+        <SignUpButton mode="modal">
+          <Button className="flex items-center rounded-full bg-black px-4 py-2">
+            <Heart size={20} color="white" />
+          </Button>
+        </SignUpButton>
+      </SignedOut>
       {}
       <Button onClick={()=> router.push("/cart")} className="flex items-center rounded-full bg-black px-4 py-2">
         <ShoppingBag size={20} color="white" />

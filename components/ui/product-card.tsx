@@ -3,12 +3,14 @@
 import { Product } from "@/types";
 import Image from "next/image";
 import IconButton from "@/components/ui/icon-button";
-import { Expand, ShoppingCart } from "lucide-react";
+import { Expand, ShoppingCart, Heart } from "lucide-react";
 import { FC, MouseEventHandler, useEffect, useState, useCallback } from "react";
 import Currency from "@/components/ui/currency";
 import { useRouter } from "next/navigation";
 import usePreviewModal from "@/hooks/use-preview-modal";
 import useCart from "@/hooks/use-cart";
+import useFavorites from "@/hooks/use-favorites";
+import { SignedIn, SignedOut, SignUpButton, useAuth } from "@clerk/nextjs";
 
 interface ProductCardProps {
   data: Product;
@@ -17,6 +19,8 @@ interface ProductCardProps {
 const ProductCard: FC<ProductCardProps> = ({ data }) => {
 
   const cart = useCart();
+  const favorites = useFavorites();
+  const { userId } = useAuth();
   const previewModal = usePreviewModal();
   const router = useRouter();
   
@@ -34,6 +38,14 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
     previewModal.onOpen(data);
   }, [previewModal, data]);
 
+  const isFav = !!(userId && (favorites.itemsByUser[userId] || []).some(p => p.id === data.id));
+  const onToggleFavorite: MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
+    event.stopPropagation();
+    if (!userId) return; // SignedOut wrapper handles modal
+    if (isFav) favorites.remove(userId, data.id);
+    else favorites.add(userId, data);
+  }, [favorites, userId, isFav, data]);
+
   return (
     <div
       className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4"
@@ -46,6 +58,7 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
           fill
           className="object-cover rounded-md"
         />
+        
         {data.stock === 0 && (
           <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 flex items-center justify-center rounded-md">
             <span className="text-white text-xl font-bold">OUT OF STOCK</span>
@@ -54,6 +67,23 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
 
         <div className="opacity-0 group-hover:opacity-100 transition absolute w-full px-6 bottom-5 z-10">
           <div className="flex gap-x-6 justify-center">
+            {/* Favorite toggle on the left */}
+            <SignedIn>
+              <IconButton
+                onClick={onToggleFavorite}
+                icon={<Heart size={20} className="text-gray-600" fill={isFav ? "black" : "none"} />}
+                ariaLabel="toggle-favorite"
+              />
+            </SignedIn>
+            <SignedOut>
+              <SignUpButton mode="modal">
+                <IconButton
+                  onClick={(e) => e.stopPropagation()}
+                  icon={<Heart size={20} className="text-gray-600" />}
+                  ariaLabel="toggle-favorite"
+                />
+              </SignUpButton>
+            </SignedOut>
             <IconButton
               onClick={onPreview}
               icon={<Expand size={20} className="text-gray-600" />}

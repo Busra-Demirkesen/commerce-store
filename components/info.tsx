@@ -3,9 +3,11 @@
 import { Product } from '@/types';
 import Currency from '@/components/ui/currency';
 import  Button  from '@/components/ui/button';
-import { ShoppingCart, Minus, Plus } from 'lucide-react';
+import { ShoppingCart, Minus, Plus, Heart } from 'lucide-react';
 import useCart from '@/hooks/use-cart';
 import { useMemo, useState } from 'react';
+import useFavorites from '@/hooks/use-favorites';
+import { SignedIn, SignedOut, SignUpButton, useAuth } from '@clerk/nextjs';
 
 interface InfoProps {
   data: Product;
@@ -13,8 +15,16 @@ interface InfoProps {
 
 const Info: React.FC<InfoProps> = ({ data }) => {
   const cart = useCart();
+  const favorites = useFavorites();
+  const { userId } = useAuth();
   const [qty, setQty] = useState(1);
   const maxQty = useMemo(() => (typeof data.stock === 'number' && data.stock > 0 ? data.stock : undefined), [data.stock]);
+  const isFav = !!(userId && (favorites.itemsByUser[userId] || []).some(p => p.id === data.id));
+  const toggleFavorite = () => {
+    if (!userId) return; // SignedOut wrapper opens modal
+    if (isFav) favorites.remove(userId, data.id);
+    else favorites.add(userId, data);
+  };
 
   const onAddToCart = () => {
     cart.addItems(data, qty);
@@ -41,6 +51,28 @@ const Info: React.FC<InfoProps> = ({ data }) => {
         <div className='flex items-center gap-x-4'>
           <h3 className='font-semibold text-black'>Color:</h3>
           <div className='h-6 w-6 rounded-full border border-gray-600' style={{ backgroundColor: data?.color?.value }} />
+          <div className='ml-2'>
+            <SignedIn>
+              <button
+                onClick={toggleFavorite}
+                aria-label='toggle-favorite'
+                className='rounded-full p-2 bg-white/90 hover:bg-white shadow border'
+              >
+                <Heart size={16} className='text-black' fill={isFav ? 'black' : 'none'} />
+              </button>
+            </SignedIn>
+            <SignedOut>
+              <SignUpButton mode='modal'>
+                <button
+                  onClick={(e) => e.preventDefault()}
+                  aria-label='toggle-favorite'
+                  className='rounded-full p-2 bg-white/90 hover:bg-white shadow border'
+                >
+                  <Heart size={16} className='text-black' />
+                </button>
+              </SignUpButton>
+            </SignedOut>
+          </div>
         </div>
       </div>
 

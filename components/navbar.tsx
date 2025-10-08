@@ -4,8 +4,7 @@ import Container from "./ui/container";
 import MobileNav from "./mobile-nav";
 import NavCenter from "./nav-center";
 import MainNav from "./main-nav";
-import SearchSlot from "./search-slot";
-import MobileSearchBelow from "./mobile-search-below";
+// removed search components from navbar
 import getCategories from "@/actions/get-categories";
 import NavbarActions from "./navbar-actions";
 import DesktopActionsOrdered from "./desktop-actions-ordered";
@@ -38,8 +37,7 @@ const Navbar = async () =>{
                         <NavbarActions/>
                     </div>
                 </div>
-                {}
-                <MobileSearchBelow />
+                
 
                 {}
                 <div className="relative px-4 sm:px-6 lg:px-8 h-16 items-center hidden lg:flex w-full">
@@ -49,8 +47,7 @@ const Navbar = async () =>{
                     <div className="ml-6 shrink-0">
                         <MainNav data={categories} />
                     </div>
-                    {}
-                    <SearchSlot />
+                    
                     <div className="ml-auto">
                         <DesktopActionsOrdered />
                     </div>

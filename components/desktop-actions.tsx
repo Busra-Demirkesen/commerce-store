@@ -2,7 +2,7 @@
 
 import Button from "@/components/ui/button";
 import useCart from "@/hooks/use-cart";
-import { ShoppingBag, User, Search } from "lucide-react";
+import { ShoppingBag, User, Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
@@ -59,9 +59,8 @@ const DesktopActions = () => {
         <span className="ml-2 text-sm font-medium text-white">{cart.items.reduce((s, l) => s + ('quantity' in l ? (l as any).quantity : 1), 0)}</span>
       </Button>
 
-      {}
-      <Button onClick={onOpen} className="flex items-center rounded-full p-2 bg-transparent hover:bg-transparent">
-        <Search size={20} color="black" />
+      <Button onClick={() => router.push("/favorites")} className="flex items-center rounded-full bg-black px-4 py-2">
+        <Heart size={20} color="white" />
       </Button>
     </div>
   );
