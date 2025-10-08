@@ -4,7 +4,7 @@ import { Product } from "@/types";
 import Image from "next/image";
 import IconButton from "@/components/ui/icon-button";
 import { Expand, ShoppingCart, Heart } from "lucide-react";
-import { FC, MouseEventHandler, useEffect, useState, useCallback } from "react";
+import { FC, MouseEventHandler, useCallback } from "react";
 import Currency from "@/components/ui/currency";
 import { useRouter } from "next/navigation";
 import usePreviewModal from "@/hooks/use-preview-modal";

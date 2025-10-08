@@ -4,8 +4,7 @@ import useCart from "@/hooks/use-cart";
 import { ShoppingBag, User, Heart } from "lucide-react"; 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
-import { useSearch } from "@/providers/search-modal-provider"; 
+import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs"; 
 
 
 
@@ -14,7 +13,6 @@ import { useSearch } from "@/providers/search-modal-provider";
 const NavbarActions = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
-  const { onOpen } = useSearch(); 
 
   useEffect(() => {
     setIsMounted(true);
@@ -46,7 +44,7 @@ const cart = useCart();
       <Button onClick={()=> router.push("/cart")} className="flex items-center rounded-full bg-black px-4 py-2">
         <ShoppingBag size={20} color="white" />
         <span className="ml-2 text-sm font-medium text-white">
-          {cart.items.reduce((s, l) => s + ('quantity' in l ? (l as any).quantity : 1), 0)}
+          {cart.count()}
         </span>
       </Button>
 

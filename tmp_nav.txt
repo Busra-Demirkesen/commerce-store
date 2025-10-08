@@ -58,7 +58,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ data }) => {
                     <button
                       className="flex w-full items-center justify-between px-4 py-3 text-left text-sm hover:bg-gray-50"
                       onClick={() => setCategoriesOpen((v) => !v)}
-                      aria-expanded={categoriesOpen ? "true" : "false"}
+                      aria-expanded={categoriesOpen}
                       aria-controls="mobile-categories-menu"
                     >
                       <span className="font-medium">Categories</span>
@@ -118,7 +118,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ data }) => {
                       <button
                         className="flex w-full items-center justify-between px-4 py-3 text-left text-sm hover:bg-gray-50"
                         onClick={() => setProfileOpen((v) => !v)}
-                        aria-expanded={profileOpen ? "true" : "false"}
+                        aria-expanded={profileOpen}
                         aria-controls="mobile-profile-menu"
                       >
                         <span className="font-medium">Profile</span>
@@ -152,3 +152,4 @@ const MobileNav: React.FC<MobileNavProps> = ({ data }) => {
 };
 
 export default MobileNav;
+
