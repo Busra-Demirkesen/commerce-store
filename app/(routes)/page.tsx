@@ -1,9 +1,11 @@
 import React from "react";
 import Container from "@/components/ui/container";
 import { Billboard } from "@/components/billboard";
+import SearchHero from "@/components/search-hero";
 import getBillboards from "@/actions/get-billboard"; 
 import getProducts from "@/actions/get-products";
 import ProductList from "@/components/product-list";
+import getCategories from "@/actions/get-categories";
 
 
 export const revalidate = 0;
@@ -25,13 +27,16 @@ const HomePage = async ({ searchParams: searchParamsPromise }: HomePageProps) =>
     isFeatured: true, 
     searchTerm: typeof searchParams.searchTerm === 'string' ? searchParams.searchTerm : undefined,
   });
+  const categories = await getCategories();
 
   return (
     <Container>
       <div className="space-y-10 pb-10">
-        {billboard && <Billboard data={billboard} />} {}
+        {/* Search section above billboard */}
+        <SearchHero categories={categories} />
+        {billboard && <Billboard data={billboard} />}
         <div className="flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8">
-          {} {}
+          
           <ProductList title="Featured Products" items={products} />
         </div>
       </div>
