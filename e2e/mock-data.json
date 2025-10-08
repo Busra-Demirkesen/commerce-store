@@ -1,0 +1,42 @@
+{
+  "billboards": [
+    { "id": "bb-1", "label": "Welcome", "imageUrl": "/next.svg" }
+  ],
+  "categories": [
+    { "id": "cat-phones", "name": "Phones", "billboard": { "id": "bb-1", "label": "Welcome", "imageUrl": "/next.svg" } },
+    { "id": "cat-laptops", "name": "Laptops", "billboard": { "id": "bb-1", "label": "Welcome", "imageUrl": "/next.svg" } }
+  ],
+  "colors": [
+    { "id": "color-black", "name": "Black", "value": "#000000" },
+    { "id": "color-white", "name": "White", "value": "#ffffff" }
+  ],
+  "sizes": [
+    { "id": "size-s", "name": "Small", "value": "S" },
+    { "id": "size-l", "name": "Large", "value": "L" }
+  ],
+  "products": [
+    {
+      "id": "p-1",
+      "name": "Phone X",
+      "price": 999,
+      "isFeatured": true,
+      "stock": 10,
+      "category": { "id": "cat-phones", "name": "Phones", "billboard": { "id": "bb-1", "label": "Welcome", "imageUrl": "/next.svg" } },
+      "size": { "id": "size-s", "name": "Small", "value": "S" },
+      "color": { "id": "color-black", "name": "Black", "value": "#000000" },
+      "images": [ { "id": "img-1", "url": "/next.svg" } ]
+    },
+    {
+      "id": "p-2",
+      "name": "Laptop Z",
+      "price": 1999,
+      "isFeatured": false,
+      "stock": 5,
+      "category": { "id": "cat-laptops", "name": "Laptops", "billboard": { "id": "bb-1", "label": "Welcome", "imageUrl": "/next.svg" } },
+      "size": { "id": "size-l", "name": "Large", "value": "L" },
+      "color": { "id": "color-white", "name": "White", "value": "#ffffff" },
+      "images": [ { "id": "img-2", "url": "/next.svg" } ]
+    }
+  ]
+}
+
