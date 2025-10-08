@@ -31,7 +31,7 @@ const Navbar = async () =>{
                         <MobileNav data={categories} />
                     </div>
                     <div className="flex items-center justify-center">
-                        <NavCenter data={categories} title="techno trend" />
+                        <NavCenter data={categories} />
                     </div>
                     <div className="flex items-center justify-end">
                         <NavbarActions/>

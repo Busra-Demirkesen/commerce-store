@@ -29,12 +29,7 @@ export default function SearchHero({ categories }: Props) {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const onQuick = (term: string) => {
-    setQuery(term);
-    const params = new URLSearchParams(searchParams?.toString() || "");
-    params.set("searchTerm", term);
-    router.push(`${pathname}?${params.toString()}`);
-  };
+  // removed onQuick; categories link directly
 
   return (
     <section className="mt-6 rounded-2xl bg-white text-gray-900 border border-gray-200 shadow-sm p-6 md:p-8">

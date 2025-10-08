@@ -50,7 +50,9 @@ const Info: React.FC<InfoProps> = ({ data }) => {
 
         <div className='flex items-center gap-x-4'>
           <h3 className='font-semibold text-black'>Color:</h3>
-          <div className='h-6 w-6 rounded-full border border-gray-600' style={{ backgroundColor: data?.color?.value }} />
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-label="Selected color" role="img">
+            <circle cx="12" cy="12" r="10" fill={data?.color?.value || '#ffffff'} stroke="#4b5563" />
+          </svg>
           <div className='ml-2'>
             <SignedIn>
               <button

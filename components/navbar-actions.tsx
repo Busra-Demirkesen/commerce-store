@@ -80,3 +80,4 @@ const cart = useCart();
 };
 
 export default NavbarActions;
+

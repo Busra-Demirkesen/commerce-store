@@ -11,10 +11,9 @@ interface Category {
 
 interface NavCenterProps {
   data: Category[];
-  title: string;
 }
 
-const NavCenter: React.FC<NavCenterProps> = ({ data, title }) => {
+const NavCenter: React.FC<NavCenterProps> = ({ data }) => {
 
   return (
     <>
