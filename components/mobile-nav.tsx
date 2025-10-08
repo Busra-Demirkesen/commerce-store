@@ -23,13 +23,13 @@ const MobileNav: React.FC<MobileNavProps> = ({ data }) => {
       <button
         aria-label="Open menu"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center justify-center rounded-md p-2 hover:bg-gray-100 md:hidden"
+        className="inline-flex items-center justify-center rounded-md p-2 hover:bg-gray-100 lg:hidden"
       >
         <Menu size={24} />
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 md:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden">
           {}
           <div
             className="absolute inset-0 bg-black/40"
