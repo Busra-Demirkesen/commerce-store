@@ -1,20 +1,20 @@
 "use client";
 import Button from "@/components/ui/button";
 import useCart from "@/hooks/use-cart";
-import { ShoppingBag, User, Search } from "lucide-react"; // Import Search icon
+import { ShoppingBag, User, Search } from "lucide-react"; 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
-import { useSearch } from "@/providers/search-modal-provider"; // Import useSearch hook
+import { useSearch } from "@/providers/search-modal-provider"; 
 
-// interface NavbarActionsProps {
-//   // onSearchOpen: () => void; // No longer needed as we use useSearch hook
-// }
+
+
+
 
 const NavbarActions = () => {
   const [isMounted, setIsMounted] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown
-  const { onOpen } = useSearch(); // Use onOpen from useSearch hook
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
+  const { onOpen } = useSearch(); 
 
   useEffect(() => {
     setIsMounted(true);
@@ -29,11 +29,11 @@ const cart = useCart();
   }
   return (
     <div className="ml-auto flex items-center gap-x-3">
-      {/* Search Icon Button */}
+      {}
       <Button onClick={onOpen} className="flex items-center rounded-full p-2 bg-transparent hover:bg-transparent">
         <Search size={20} color="black" />
       </Button>
-      {/* Cart Button */}
+      {}
       <Button onClick={()=> router.push("/cart")} className="flex items-center rounded-full bg-black px-4 py-2">
         <ShoppingBag size={20} color="white" />
         <span className="ml-2 text-sm font-medium text-white">
@@ -51,7 +51,7 @@ const cart = useCart();
             className="flex items-center rounded-full bg-black px-4 py-2 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             aria-expanded={isDropdownOpen ? "true" : "false"}
           >
-            <User size={20} color="white" /> {/* User icon */}
+            <User size={20} color="white" /> {}
           </Button>
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">

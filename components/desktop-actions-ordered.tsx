@@ -24,18 +24,18 @@ const DesktopActionsOrdered = () => {
 
   return (
     <div className="ml-auto flex items-center gap-x-3">
-      {/* Search left of cart */}
+      {}
       <Button onClick={onOpen} className="flex items-center rounded-full p-2 bg-transparent hover:bg-transparent">
         <Search size={20} color="black" />
       </Button>
 
-      {/* Cart in the middle */}
+      {}
       <Button onClick={() => router.push("/cart")} className="flex items-center rounded-full bg-black px-4 py-2">
         <ShoppingBag size={20} color="white" />
         <span className="ml-2 text-sm font-medium text-white" data-testid="cart-count">{cart.items.length}</span>
       </Button>
 
-      {/* Profile right of cart */}
+      {}
       <div className="relative">
         <SignedIn>
           <UserButton afterSignOutUrl="/" />

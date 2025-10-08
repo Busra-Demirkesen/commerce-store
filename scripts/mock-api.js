@@ -1,5 +1,5 @@
-// Minimal local mock API for E2E tests (no external deps)
-// Serves endpoints used by the app under NEXT_PUBLIC_API_URL
+
+
 
 const http = require('http');
 const url = require('url');
@@ -93,6 +93,6 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  // eslint-disable-next-line no-console
+  
   console.log(`Mock API listening on http://localhost:${PORT}`);
 });

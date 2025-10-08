@@ -30,13 +30,13 @@ const MobileNav: React.FC<MobileNavProps> = ({ data }) => {
 
       {open && (
         <div className="fixed inset-0 z-50 md:hidden">
-          {/* Backdrop */}
+          {}
           <div
             className="absolute inset-0 bg-black/40"
             onClick={() => setOpen(false)}
           />
 
-          {/* Drawer */}
+          {}
           <div className="relative h-full w-72 max-w-[80%] bg-white shadow-xl flex flex-col">
             <div className="flex items-center justify-between px-4 py-4 border-b">
               <span className="font-semibold">Categories</span>
@@ -64,7 +64,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ data }) => {
                     </li>
                   ))}
 
-                  {/* Profile row directly under categories */}
+                  {}
                   <li className="mt-1 border-t" />
                   <li>
                     <SignedIn>

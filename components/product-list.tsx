@@ -11,7 +11,7 @@ const ProductList:React.FC<ProductListProps> = ({
   title,
   items
 }) =>{
-  // console.log("ProductList bileşenine gelen ürünler:", items); // Bu satırı ekleyin
+  
 
   return(
     <div className='space-y-4'>

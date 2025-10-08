@@ -14,30 +14,26 @@
     - generic [ref=e12]:
       - button [ref=e13] [cursor=pointer]:
         - img [ref=e14]
-      - button "0" [ref=e17] [cursor=pointer]:
+      - button "0" [active] [ref=e17] [cursor=pointer]:
         - img [ref=e18]
         - generic [ref=e21]: "0"
       - button [ref=e23] [cursor=pointer]:
         - img [ref=e24]
-  - generic [ref=e28]:
-    - generic [ref=e32]: Welcome
-    - generic [ref=e34]:
-      - heading "Featured Products" [level=3] [ref=e35]
-      - generic [ref=e37] [cursor=pointer]:
-        - generic [ref=e38]:
-          - img "Product" [ref=e39]
-          - generic [ref=e41]:
-            - button "preview" [ref=e42]:
-              - img [ref=e43]
-            - button "add-to-cart-card" [active] [ref=e52]:
-              - img [ref=e53]
-        - generic [ref=e57]:
-          - paragraph [ref=e58]: Phone X
-          - paragraph [ref=e59]: Phones
-        - generic [ref=e61]: $999.00
-  - contentinfo [ref=e62]:
-    - paragraph [ref=e64]: © 2025 e-Commerce. All rights reserved.
-  - button "Open Next.js Dev Tools" [ref=e70] [cursor=pointer]:
-    - img [ref=e71]
-  - alert [ref=e74]
+  - generic [ref=e29]:
+    - heading "Shopping Cart" [level=1] [ref=e30]
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - paragraph [ref=e33]: No items added to cart
+        - list
+      - generic [ref=e34]:
+        - heading "Order Summary" [level=2] [ref=e35]
+        - generic [ref=e37]:
+          - generic [ref=e38]: Order Total
+          - generic [ref=e39]: $0.00
+        - button "Checkout" [disabled] [ref=e40]
+  - contentinfo [ref=e41]:
+    - paragraph [ref=e43]: © 2025 e-Commerce. All rights reserved.
+  - button "Open Next.js Dev Tools" [ref=e49] [cursor=pointer]:
+    - img [ref=e50]
+  - alert [ref=e53]
 ```

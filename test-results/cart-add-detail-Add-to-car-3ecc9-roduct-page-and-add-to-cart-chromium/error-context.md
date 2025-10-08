@@ -14,7 +14,7 @@
     - generic [ref=e12]:
       - button [ref=e13] [cursor=pointer]:
         - img [ref=e14]
-      - button "0" [ref=e17] [cursor=pointer]:
+      - button "0" [active] [ref=e17] [cursor=pointer]:
         - img [ref=e18]
         - generic [ref=e21]: "0"
       - button [ref=e23] [cursor=pointer]:
@@ -34,7 +34,7 @@
             - heading "Size:" [level=3] [ref=e50]
             - generic [ref=e51]: Small
           - heading "Color:" [level=3] [ref=e53]
-        - button "Add to Cart" [active] [ref=e56] [cursor=pointer]:
+        - button "Add to Cart" [ref=e56] [cursor=pointer]:
           - text: Add to Cart
           - img [ref=e57]
     - separator [ref=e61]

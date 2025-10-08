@@ -3,11 +3,11 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import qs from 'query-string';
-import { X } from 'lucide-react'; // Import X icon for close button
+import { X } from 'lucide-react'; 
 
 import Button from '@/components/ui/button';
-import Input from '@/components/ui/input'; // Assuming you have an Input component or will create one
-import { cn } from '@/lib/utils'; // `cn` fonksiyonunu içeri aktarıyoruz
+import Input from '@/components/ui/input'; 
+import { cn } from '@/lib/utils'; 
 
 interface SearchBarProps {
   isOpen: boolean;
@@ -20,7 +20,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    onClose(); // Close search bar after submission
+    onClose(); 
 
     const url = qs.stringifyUrl({
       url: '/',
@@ -38,8 +38,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className={cn(
-      "fixed w-full z-50 p-4 flex items-center justify-between", // Original styling
-      isOpen ? "top-16 opacity-100 visible" : "-top-full opacity-0 invisible", // Animate from top
+      "fixed w-full z-50 p-4 flex items-center justify-between", 
+      isOpen ? "top-16 opacity-100 visible" : "-top-full opacity-0 invisible", 
       "bg-white shadow-lg rounded-lg transition-all duration-300"
     )}>
       <form onSubmit={onSubmit} className="flex-grow flex items-center space-x-2">

@@ -27,7 +27,7 @@ export default defineConfig({
       timeout: 30_000,
     },
     {
-      // Use dev server for local iteration; switch to `start` in CI if desired.
+      
       command: 'npm run dev',
       port: 3000,
       reuseExistingServer: false,

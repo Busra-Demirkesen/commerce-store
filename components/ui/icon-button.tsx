@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"; // Eğer `cn` fonksiyonu varsa
+import { cn } from "@/lib/utils"; 
 import { MouseEventHandler } from "react";
 
 interface IconButtonProps {
@@ -6,7 +6,7 @@ interface IconButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
   icon:React.ReactElement;
   className?:string;
-  disabled?: boolean; // disabled prop'unu ekliyoruz
+  disabled?: boolean; 
 }
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -20,7 +20,7 @@ const IconButton: React.FC<IconButtonProps> = ({
       onClick={onClick}
       className={cn(
         "rounded-full flex items-center justify-center bg-white border shadow-md p-2 hover:scale-110 transition",
-        disabled && "opacity-50 cursor-not-allowed", // disabled olduğunda stil ekliyoruz
+        disabled && "opacity-50 cursor-not-allowed", 
         className
       )}
       disabled={disabled}

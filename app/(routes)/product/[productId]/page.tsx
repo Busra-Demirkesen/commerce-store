@@ -1,4 +1,4 @@
-// app/(routes)/product/[productId]/page.tsx
+
 import getProduct from "@/actions/get-product";
 import getProducts from "@/actions/get-products";
 import ProductList from "@/components/product-list";
@@ -17,7 +17,7 @@ export default async function ProductPage({ params }: PageProps) {
 
   const product = await getProduct(productId);
 
-  // product yoksa güvenli dönüş
+  
   if (!product) {
     return (
       <div className="bg-white">

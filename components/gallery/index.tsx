@@ -14,9 +14,9 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
     <div className="w-full">
 
       <Tab.Group as="div" className="flex flex-col lg:flex-row gap-y-6 lg:gap-x-8">
-  {/* LEFT: Thumbnails + Main Image */}
+  {}
   <div className="w-full lg:w-1/2">
-    {/* Main image panels */}
+    {}
     <Tab.Panels className="w-full mb-4">
       {images.map((image) => (
         <Tab.Panel key={image.id}>
@@ -32,7 +32,7 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
       ))}
     </Tab.Panels>
 
-    {/* Thumbnail list */}
+    {}
     <div className="mx-auto mt-2 hidden w-full max-w-2xl sm:block lg:max-w-none">
       <Tab.List className="grid grid-cols-4 gap-4">
         {images.map((image) => (
@@ -42,8 +42,8 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
     </div>
   </div>
 
-  {/* RIGHT: Info alanı */}
-  {/* <div className="w-full lg:w-1/2 px-4">İçerik buraya</div> */}
+  {}
+  {}
 </Tab.Group>
 
     </div>

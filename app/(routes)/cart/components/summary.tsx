@@ -1,5 +1,5 @@
 "use client";
-// import axios from "axios"; // Removed unused import
+
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -7,9 +7,9 @@ import Button from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import toast from "react-hot-toast";
-// import { loadStripe } from '@stripe/stripe-js'; // No longer needed
 
-// const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!); // No longer needed
+
+
 
 const Summary = () => {
   const searchParams = useSearchParams();
@@ -51,7 +51,7 @@ const Summary = () => {
       const data = await response.json();
 
       if (response.ok) {
-        window.location.href = data.url; // Backend must return a URL for Stripe Checkout
+        window.location.href = data.url; 
       } else {
         toast.error(data.error || "Checkout failed!");
       }

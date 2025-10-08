@@ -9,7 +9,7 @@ interface Query {
   colorId?: string;
   sizeId?: string;
   isFeatured?: boolean;
-  searchTerm?: string; // Add searchTerm here
+  searchTerm?: string; 
 }
 
 const getProducts = async (query:Query) : Promise<Product[]> => {
@@ -20,20 +20,20 @@ const getProducts = async (query:Query) : Promise<Product[]> => {
       colorId: query.colorId,
       sizeId:query.sizeId,
       categoryId:query.categoryId,
-      isFeatured:query.isFeatured, // Yorum satırı kaldırıldı
-      searchTerm: query.searchTerm, // Pass searchTerm to the API
+      isFeatured:query.isFeatured, 
+      searchTerm: query.searchTerm, 
      }
   })
 
-  // console.log("API'ye gönderilen URL:", url); // Yorum satırı yapıldı
+  
 
     const response = await fetch(url);
 
-  // console.log("API yanıt durumu:", response.ok, response.status); // Yorum satırı yapıldı
-  // const responseText = await response.text(); // Yorum satırı yapıldı
-  // console.log("API'den gelen ham yanıt:", responseText); // Yorum satırı yapıldı
+  
+  
+  
 
-    return response.json(); // Eski haline getirildi
+    return response.json(); 
 }
 
 export default getProducts;

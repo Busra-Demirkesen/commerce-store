@@ -15,12 +15,12 @@ export interface Product {
   id: string;
   category: Category;
   name:string;
-  price:number; // <<< string yerine number olarak düzeltildi
+  price:number; 
   isFeatured:boolean;
   size:Size;
   color:Color;
   images:Image[];
-  stock: number; // <<< Yeni eklendi
+  stock: number; 
 }
 
 export interface Image{
