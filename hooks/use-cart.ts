@@ -3,11 +3,19 @@ import { Product } from "@/types";
 import { persist, createJSONStorage } from "zustand/middleware";
 import toast from "react-hot-toast";
 
+export interface CartLine {
+  product: Product;
+  quantity: number;
+}
+
 interface CartStore {
-  items: Product[];
+  items: CartLine[];
   addItem: (data: Product) => void;
   removeItem: (id: string) => void;
   removeAll: () => void;
+  increment: (id: string) => void;
+  decrement: (id: string) => void;
+  count: () => number; // total quantity
 }
 
 const useCart = create(
@@ -16,22 +24,22 @@ const useCart = create(
       items: [],
 
       addItem: (data: Product) => {
-        const currentItems = get().items;
-        const existingItem = currentItems.find(
-          (item) => item.id === data.id
-        );
-
-        if (existingItem) {
-          return toast("Item already in cart");
+        const items = get().items.slice();
+        const idx = items.findIndex((l) => l.product.id === data.id);
+        if (idx !== -1) {
+          items[idx] = { ...items[idx], quantity: items[idx].quantity + 1 };
+          set({ items });
+          toast.success("Quantity updated");
+          return;
         }
-
-        set({ items: [...currentItems, data] });
+        items.push({ product: data, quantity: 1 });
+        set({ items });
         toast.success("Item added to cart");
       },
 
       removeItem: (id: string) => {
-        const filteredItems = get().items.filter((item) => item.id !== id);
-        set({ items: filteredItems });
+        const filtered = get().items.filter((l) => l.product.id !== id);
+        set({ items: filtered });
         toast.success("Item removed from the cart");
       },
 
@@ -39,6 +47,24 @@ const useCart = create(
         set({ items: [] });
         toast.success("All items removed from the cart");
       },
+
+      increment: (id: string) => {
+        const items = get().items.map((l) =>
+          l.product.id === id ? { ...l, quantity: l.quantity + 1 } : l
+        );
+        set({ items });
+      },
+
+      decrement: (id: string) => {
+        const items = get().items
+          .map((l) =>
+            l.product.id === id ? { ...l, quantity: l.quantity - 1 } : l
+          )
+          .filter((l) => l.quantity > 0);
+        set({ items });
+      },
+
+      count: () => get().items.reduce((sum, l) => sum + l.quantity, 0),
     }),
     {
       name: "cart-storage",

@@ -30,10 +30,11 @@ const CartPage = () => {
                    {cart?.items?.length === 0 && 
                 <p className="text-neutral-50">No items added to cart</p>}
                 <ul>
-                    {cart.items.map((item) =>(
+                    {cart.items.map((line) =>(
                         <CartItem 
-                        key={item.id}
-                        data={item}/>
+                          key={line.product.id}
+                          item={line}
+                        />
                     ))}
                 </ul>
               </div>

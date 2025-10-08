@@ -6,15 +6,18 @@ test.describe('Add to cart via detail page (seeded)', () => {
       state: {
         items: [
           {
-            id: 'p-1',
-            name: 'Phone X',
-            price: 999,
-            isFeatured: true,
-            stock: 10,
-            category: { id: 'cat-phones', name: 'Phones', billboard: null },
-            size: { id: 'size-s', name: 'Small', value: 'S' },
-            color: { id: 'color-black', name: 'Black', value: '#000000' },
-            images: [{ id: 'img-1', url: '/next.svg' }],
+            product: {
+              id: 'p-1',
+              name: 'Phone X',
+              price: 999,
+              isFeatured: true,
+              stock: 10,
+              category: { id: 'cat-phones', name: 'Phones', billboard: null },
+              size: { id: 'size-s', name: 'Small', value: 'S' },
+              color: { id: 'color-black', name: 'Black', value: '#000000' },
+              images: [{ id: 'img-1', url: '/next.svg' }],
+            },
+            quantity: 1,
           },
         ],
       },

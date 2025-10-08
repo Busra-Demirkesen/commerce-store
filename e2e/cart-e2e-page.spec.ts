@@ -6,15 +6,18 @@ test.describe('Cart via seeded localStorage', () => {
       state: {
         items: [
           {
-            id: 'e2e-p',
-            name: 'E2E Product',
-            price: 123,
-            isFeatured: false,
-            stock: 1,
-            category: { id: 'e2e-cat', name: 'E2E', billboard: null },
-            size: { id: 'e2e-size', name: 'One', value: 'ONE' },
-            color: { id: 'e2e-color', name: 'Gray', value: '#888888' },
-            images: [{ id: 'e2e-img', url: '/next.svg' }],
+            product: {
+              id: 'e2e-p',
+              name: 'E2E Product',
+              price: 123,
+              isFeatured: false,
+              stock: 1,
+              category: { id: 'e2e-cat', name: 'E2E', billboard: null },
+              size: { id: 'e2e-size', name: 'One', value: 'ONE' },
+              color: { id: 'e2e-color', name: 'Gray', value: '#888888' },
+              images: [{ id: 'e2e-img', url: '/next.svg' }],
+            },
+            quantity: 1,
           },
         ],
       },

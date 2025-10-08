@@ -32,7 +32,7 @@ const DesktopActionsOrdered = () => {
       {}
       <Button onClick={() => router.push("/cart")} className="flex items-center rounded-full bg-black px-4 py-2">
         <ShoppingBag size={20} color="white" />
-        <span className="ml-2 text-sm font-medium text-white" data-testid="cart-count">{cart.items.length}</span>
+        <span className="ml-2 text-sm font-medium text-white" data-testid="cart-count">{cart.items.reduce((s, l) => s + l.quantity, 0)}</span>
       </Button>
 
       {}
