@@ -79,6 +79,13 @@ const server = http.createServer((req, res) => {
       return sendJSON(res, 200, products);
     }
 
+    if (pathname && pathname.startsWith('/products/')) {
+      const id = pathname.split('/')[2];
+      const product = data.products.find(p => p.id === id);
+      if (!product) return sendJSON(res, 404, { error: 'Product not found' });
+      return sendJSON(res, 200, product);
+    }
+
     return sendJSON(res, 404, { error: 'Not Found' });
   } catch (e) {
     return sendJSON(res, 500, { error: 'Server Error', detail: String(e && e.message || e) });

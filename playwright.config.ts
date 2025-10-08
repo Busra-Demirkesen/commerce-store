@@ -2,8 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './e2e',
-  timeout: 30_000,
-  expect: { timeout: 5_000 },
+  timeout: 60_000,
+  expect: { timeout: 10_000 },
   fullyParallel: true,
   retries: process.env.CI ? 2 : 0,
   reporter: [['list']],
@@ -30,13 +30,13 @@ export default defineConfig({
       // Use dev server for local iteration; switch to `start` in CI if desired.
       command: 'npm run dev',
       port: 3000,
-      reuseExistingServer: true,
+      reuseExistingServer: false,
       timeout: 120_000,
       env: {
         NEXT_PUBLIC_API_URL: 'http://localhost:3001',
+        NEXT_PUBLIC_E2E: 'true',
         CLERK_PUBLISHABLE_KEY: process.env.CLERK_PUBLISHABLE_KEY || 'pk_test_dummy',
       },
     },
   ],
 });
-

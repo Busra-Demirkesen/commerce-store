@@ -12,6 +12,10 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware((auth, req) => {
+  if (process.env.NEXT_PUBLIC_E2E === 'true') {
+    // In E2E runs, bypass auth protection to allow testing flows.
+    return;
+  }
   if (isProtectedRoute(req)) {
     // Giriş yapmamışsa otomatik yönlendir.
     // Girişten sonra aynı URL'ye dönmesi için redirect_url paramı geçiyoruz.

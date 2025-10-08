@@ -57,11 +57,13 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
             <IconButton
               onClick={onPreview}
               icon={<Expand size={20} className="text-gray-600" />}
+              ariaLabel="preview"
             />
 
             <IconButton
               onClick={onAddToCart}
               icon={<ShoppingCart size={20} className="text-gray-600" />}
+              ariaLabel="add-to-cart-card"
               disabled={data.stock === 0} // Sepete ekle butonunu stok 0 ise pasif yap
             />
           </div>
