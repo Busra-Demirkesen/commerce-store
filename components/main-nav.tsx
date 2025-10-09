@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "@headlessui/react";
+import { ChevronRight } from "lucide-react";
 
 interface Category {
   id: string;
@@ -21,33 +22,47 @@ const MainNav: React.FC<MainNavProps> = ({ data }) => {
     <nav className="mx-6 flex items-center space-x-4 lg:space-x-6">
       {/* Categories dropdown */}
       <Menu as="div" className="relative inline-block text-left">
-        <Menu.Button
-          className={cn(
-            "text-sm font-medium transition-colors hover:text-primary px-2 py-1 rounded-md",
-            pathname?.startsWith("/category/") ? "text-black dark:text-white" : "text-muted-foreground"
-          )}
-        >
-          Categories
-        </Menu.Button>
-        <Menu.Items className="absolute left-0 mt-2 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-20">
-          <div className="py-1">
-            {data.map((cat) => (
-              <Menu.Item key={cat.id}>
-                {({ active }) => (
-                  <Link
-                    href={`/category/${cat.id}`}
-                    className={cn(
-                      "block px-4 py-2 text-sm",
-                      active ? "bg-gray-100 text-black" : "text-gray-700"
-                    )}
-                  >
-                    {cat.name}
-                  </Link>
+        {({ open }) => (
+          <>
+            <Menu.Button
+              className={cn(
+                "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary px-2 py-1 rounded-md",
+                pathname?.startsWith("/category/") ? "text-black dark:text-white" : "text-muted-foreground"
+              )}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : "false"}
+            >
+              <span>Categories</span>
+              <ChevronRight
+                size={16}
+                className={cn(
+                  "transition-transform",
+                  open ? "rotate-90" : "rotate-0"
                 )}
-              </Menu.Item>
-            ))}
-          </div>
-        </Menu.Items>
+                aria-hidden="true"
+              />
+            </Menu.Button>
+            <Menu.Items className="absolute left-0 mt-2 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-20">
+              <div className="py-1">
+                {data.map((cat) => (
+                  <Menu.Item key={cat.id}>
+                    {({ active }) => (
+                      <Link
+                        href={`/category/${cat.id}`}
+                        className={cn(
+                          "block px-4 py-2 text-sm",
+                          active ? "bg-gray-100 text-black" : "text-gray-700"
+                        )}
+                      >
+                        {cat.name}
+                      </Link>
+                    )}
+                  </Menu.Item>
+                ))}
+              </div>
+            </Menu.Items>
+          </>
+        )}
       </Menu>
 
       {/* Static pages */}

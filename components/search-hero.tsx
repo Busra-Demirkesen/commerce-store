@@ -29,27 +29,8 @@ export default function SearchHero({ categories }: Props) {
       router.push(`${pathname}?${params.toString()}`);
       return;
     }
-
     params.set("searchTerm", query);
-
-    try {
-      const base = process.env.NEXT_PUBLIC_API_URL;
-      if (base) {
-        const res = await fetch(`${base}/products?${new URLSearchParams({ searchTerm: query })}`);
-        if (res.ok) {
-          const items: import("@/types").Product[] = await res.json();
-          const exact = items.find(p => p.name.toLowerCase() === query.toLowerCase());
-          const target = exact || (items.length === 1 ? items[0] : undefined);
-          if (target) {
-            router.push(`/product/${target.id}`);
-            return;
-          }
-        }
-      }
-    } catch (_) {
-      // fall back to listing on any error
-    }
-
+    // Let the server route handle redirect to product detail to avoid CORS
     router.push(`${pathname}?${params.toString()}`);
   };
 

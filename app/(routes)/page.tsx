@@ -6,6 +6,7 @@ import getBillboards from "@/actions/get-billboard";
 import getProducts from "@/actions/get-products";
 import ProductList from "@/components/product-list";
 import getCategories from "@/actions/get-categories";
+import { redirect } from "next/navigation";
 
 
 export const revalidate = 0;
@@ -23,9 +24,20 @@ const HomePage = async ({ searchParams: searchParamsPromise }: HomePageProps) =>
   const billboards = await getBillboards(); 
   const billboard = billboards.length > 0 ? billboards[0] : null; 
 
+  const rawSearch = typeof searchParams.searchTerm === 'string' ? searchParams.searchTerm : undefined;
+  const searchTerm = rawSearch?.trim();
+
+  if (searchTerm) {
+    const matches = await getProducts({ searchTerm });
+    if (matches && matches.length > 0) {
+      const exact = matches.find(p => p.name.toLowerCase() === searchTerm.toLowerCase());
+      const target = exact || matches[0];
+      redirect(`/product/${target.id}`);
+    }
+  }
+
   const products = await getProducts({
-    isFeatured: true, 
-    searchTerm: typeof searchParams.searchTerm === 'string' ? searchParams.searchTerm : undefined,
+    isFeatured: true,
   });
   const categories = await getCategories();
 

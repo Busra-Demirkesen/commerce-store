@@ -20,30 +20,8 @@ const InlineSearch: React.FC<InlineSearchProps> = ({ onClose }) => {
     onClose();
 
     const term = searchTerm.trim();
-    if (!term) {
-      router.push("/");
-      return;
-    }
-
-    try {
-      const base = process.env.NEXT_PUBLIC_API_URL;
-      if (base) {
-        const res = await fetch(`${base}/products?${new URLSearchParams({ searchTerm: term })}`);
-        if (res.ok) {
-          const items: import("@/types").Product[] = await res.json();
-          const exact = items.find(p => p.name.toLowerCase() === term.toLowerCase());
-          const target = exact || (items.length === 1 ? items[0] : undefined);
-          if (target) {
-            router.push(`/product/${target.id}`);
-            return;
-          }
-        }
-      }
-    } catch (_) {
-      // ignore and fall back
-    }
-
-    const url = qs.stringifyUrl({ url: "/", query: { searchTerm: term } }, { skipNull: true });
+    const url = qs.stringifyUrl({ url: "/", query: { searchTerm: term || undefined } }, { skipNull: true });
+    // Server page will redirect to product detail if there is a match
     router.push(url);
   };
 
