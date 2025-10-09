@@ -1,37 +1,68 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAuth, useClerk } from "@clerk/nextjs";
+import { apiBase } from "@/lib/api";
 
 import Button from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
+import useOrders from "@/hooks/use-orders";
 import toast from "react-hot-toast";
-
-
-
 
 const Summary = () => {
   const searchParams = useSearchParams();
   const items = useCart((state) => state.items);
   const removeAll = useCart((state) => state.removeAll);
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, userId } = useAuth();
   const { openSignIn } = useClerk();
+  const addOrder = useOrders((s) => s.add);
 
+  // Derive a stable success flag and keep a guard to avoid loops
+  const success = useMemo(() => searchParams?.get("success"), [searchParams]);
+  const handledRef = useRef(false);
+  const itemsRef = useRef(items);
+  useEffect(() => { itemsRef.current = items; }, [items]);
 
-  useEffect(()=>{
-    if(searchParams?.get('success')){
-        toast.success('Payment completed');
-        removeAll();
+  useEffect(() => {
+    if (success && !handledRef.current) {
+      handledRef.current = true;
+      toast.success("Payment completed");
+      // Record a simple local order for "My Orders"
+      try {
+        const snapshot = itemsRef.current;
+        if (userId && snapshot.length > 0) {
+          addOrder(userId, {
+            items: snapshot.map((l) => ({ product: l.product, quantity: l.quantity })),
+            total: snapshot.reduce(
+              (sum, l) => sum + Number(l.product.price) * l.quantity,
+              0
+            ),
+          });
+        }
+      } catch (e) {
+        // no-op if localStorage unavailable
+      }
+      removeAll();
+
+      // Remove success param to prevent re-processing on re-render
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("success");
+        window.history.replaceState({}, "", url.toString());
+      } catch {}
     }
 
-    if(searchParams?.get('canceled')){
-        toast.error('Something went wrong');
+    if (searchParams?.get("canceled")) {
+      toast.error("Something went wrong");
     }
-  },[searchParams, removeAll]);
+  }, [success, removeAll, userId, addOrder, searchParams]);
 
-  const totalPrice = items.reduce((total, line) => total + Number(line.product.price) * line.quantity, 0);
+  const totalPrice = items.reduce(
+    (total, line) => total + Number(line.product.price) * line.quantity,
+    0
+  );
 
   const onCheckout = async () => {
     try {
@@ -41,12 +72,10 @@ const Summary = () => {
         return;
       }
 
-      console.log("Checkout API URL:", `${process.env.NEXT_PUBLIC_API_URL}/checkout`);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      // Call our server route to avoid CORS and keep secrets server-side
+      const response = await fetch(`/api/checkout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productIds: items.flatMap((line) => Array(line.quantity).fill(line.product.id)),
         }),
@@ -55,16 +84,24 @@ const Summary = () => {
       const data = await response.json();
 
       if (response.ok) {
-        window.location.href = data.url; 
+        window.location.href = data.url;
       } else {
         toast.error(data.error || "Checkout failed!");
       }
     } catch (error) {
-      console.error("Checkout sırasında ağ hatası:", error);
-      toast.error("Ağ hatası oluştu. Lütfen tekrar deneyin.");
+      console.error("Checkout network error:", error);
+      const devFallback = process.env.NEXT_PUBLIC_CHECKOUT_DEV_FALLBACK === "1";
+      if (devFallback) {
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set("success", "1");
+          window.location.href = url.toString();
+          return;
+        } catch {}
+      }
+      toast.error("Checkout failed. Please try again later.");
     }
   };
-
 
   return (
     <div
@@ -86,7 +123,13 @@ const Summary = () => {
           <Currency value={totalPrice} />
         </div>
       </div>
-      <Button disabled={items.length ===0} onClick={onCheckout} className="w-full mt-4">Checkout</Button>
+      <Button
+        disabled={items.length === 0}
+        onClick={onCheckout}
+        className="w-full mt-4"
+      >
+        Checkout
+      </Button>
     </div>
   );
 };
