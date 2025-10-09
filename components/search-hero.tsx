@@ -22,10 +22,34 @@ export default function SearchHero({ categories }: Props) {
     setQuery(current);
   }, [searchParams]);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const params = new URLSearchParams(searchParams?.toString() || "");
-    if (query) params.set("searchTerm", query);
-    else params.delete("searchTerm");
+    if (!query) {
+      params.delete("searchTerm");
+      router.push(`${pathname}?${params.toString()}`);
+      return;
+    }
+
+    params.set("searchTerm", query);
+
+    try {
+      const base = process.env.NEXT_PUBLIC_API_URL;
+      if (base) {
+        const res = await fetch(`${base}/products?${new URLSearchParams({ searchTerm: query })}`);
+        if (res.ok) {
+          const items: import("@/types").Product[] = await res.json();
+          const exact = items.find(p => p.name.toLowerCase() === query.toLowerCase());
+          const target = exact || (items.length === 1 ? items[0] : undefined);
+          if (target) {
+            router.push(`/product/${target.id}`);
+            return;
+          }
+        }
+      }
+    } catch (_) {
+      // fall back to listing on any error
+    }
+
     router.push(`${pathname}?${params.toString()}`);
   };
 
