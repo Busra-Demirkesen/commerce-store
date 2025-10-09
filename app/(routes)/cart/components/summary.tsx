@@ -75,29 +75,46 @@ const Summary = () => {
         return;
       }
 
+      const email = (user?.primaryEmailAddress as any)?.emailAddress || user?.emailAddresses?.[0]?.emailAddress || "";
+      const phone =
+        (user as any)?.primaryPhoneNumber?.phoneNumber ||
+        (user as any)?.phoneNumbers?.[0]?.phoneNumber ||
+        (userId ? profiles[userId]?.phone : "") || "";
+      const addr = userId
+        ? {
+            line1: profiles[userId]?.addressLine1 || "",
+            line2: profiles[userId]?.addressLine2 || "",
+            city: profiles[userId]?.city || "",
+            state: profiles[userId]?.state || "",
+            postalCode: profiles[userId]?.postalCode || "",
+            country: profiles[userId]?.country || "",
+            deliveryNotes: profiles[userId]?.deliveryNotes || "",
+            fullName: profiles[userId]?.fullName || user?.fullName || "",
+          }
+        : undefined;
+
+      if (!email) {
+        toast.error("Please add an email to your profile");
+        return;
+      }
+      if (!phone) {
+        toast.error("Please add a phone number in Account > Contact details");
+        return;
+      }
+      if (!addr || !addr.line1) {
+        toast.error("Please add your address in Account > Contact details");
+        return;
+      }
+
       // Call our server route to avoid CORS and keep secrets server-side
       const response = await fetch(`/api/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productIds: items.flatMap((line) => Array(line.quantity).fill(line.product.id)),
-          email: (user?.primaryEmailAddress as any)?.emailAddress || user?.emailAddresses?.[0]?.emailAddress || "",
-          phone:
-            (user as any)?.primaryPhoneNumber?.phoneNumber ||
-            (user as any)?.phoneNumbers?.[0]?.phoneNumber ||
-            (userId ? profiles[userId]?.phone : "") || "",
-          address: userId
-            ? {
-                line1: profiles[userId]?.addressLine1 || "",
-                line2: profiles[userId]?.addressLine2 || "",
-                city: profiles[userId]?.city || "",
-                state: profiles[userId]?.state || "",
-                postalCode: profiles[userId]?.postalCode || "",
-                country: profiles[userId]?.country || "",
-                deliveryNotes: profiles[userId]?.deliveryNotes || "",
-                fullName: profiles[userId]?.fullName || user?.fullName || "",
-              }
-            : undefined,
+          email,
+          phone,
+          address: addr,
         }),
       });
 
