@@ -54,6 +54,11 @@ const Footer = async () => {
               <h3 className="text-sm font-semibold tracking-wide uppercase text-gray-300">Support</h3>
               <ul className="mt-3 space-y-2">
                 <li>
+                  <Link href="/about" className="text-sm text-white/90 hover:text-white underline-offset-4 hover:underline">
+                    About
+                  </Link>
+                </li>
+                <li>
                   <Link href="/contact" className="text-sm text-white/90 hover:text-white underline-offset-4 hover:underline">
                     Contact us
                   </Link>
