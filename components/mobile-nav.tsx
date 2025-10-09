@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, ChevronRight } from "lucide-react";
-import { SignedIn, SignedOut, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, SignUpButton, SignOutButton } from "@clerk/nextjs";
 
 interface Category {
   id: string;
@@ -110,40 +110,42 @@ const MobileNav: React.FC<MobileNavProps> = ({ data }) => {
 
                   <li className="mt-1 border-t" />
                   <li>
-                    <SignedIn>
-                      <div className="flex items-center justify-between px-4 py-3">
-                        <span className="text-sm font-medium">Profile</span>
-                        <UserButton afterSignOutUrl="/" />
-                      </div>
-                    </SignedIn>
-                    <SignedOut>
-                      <button
-                        className="flex w-full items-center justify-between px-4 py-3 text-left text-sm hover:bg-gray-50"
-                        type="button"
-                        onClick={() => setProfileOpen((v) => !v)}
-                        aria-haspopup="true"
-                        aria-expanded={profileOpen ? "true" : "false"}
-                        aria-controls="mobile-profile-menu"
-                      >
-                        <span className="font-medium">Profile</span>
-                        <ChevronRight
-                          size={18}
-                          className={profileOpen ? "transform rotate-90 transition-transform" : "transition-transform"}
-                        />
-                      </button>
-                      {profileOpen && (
-                        <div id="mobile-profile-menu" className="px-4 pb-3">
-                          <div className="mt-2 flex flex-col">
+                    <button
+                      className="flex w-full items-center justify-between px-4 py-3 text-left text-sm hover:bg-gray-50"
+                      type="button"
+                      onClick={() => setProfileOpen((v) => !v)}
+                      aria-haspopup="true"
+                      aria-expanded={profileOpen ? "true" : "false"}
+                      aria-controls="mobile-profile-menu"
+                    >
+                      <span className="font-medium">Profile</span>
+                      <ChevronRight
+                        size={18}
+                        className={profileOpen ? "transform rotate-90 transition-transform" : "transition-transform"}
+                      />
+                    </button>
+                    {profileOpen && (
+                      <div id="mobile-profile-menu" className="px-4 pb-3">
+                        <div className="mt-2 flex flex-col">
+                          <SignedOut>
                             <SignInButton mode="modal">
-                              <span className="block py-1 text-sm text-gray-700 cursor-pointer">Sign in</span>
+                              <span className="block py-2 text-sm text-black cursor-pointer">Sign in</span>
                             </SignInButton>
                             <SignUpButton mode="modal">
-                              <span className="block py-1 text-sm text-gray-700 cursor-pointer">Sign up</span>
+                              <span className="block py-2 text-sm text-black cursor-pointer">Sign up</span>
                             </SignUpButton>
-                          </div>
+                          </SignedOut>
+                          <SignedIn>
+                            <Link href="/account" onClick={() => setOpen(false)} className="block py-2 text-sm text-black">
+                              My Account
+                            </Link>
+                            <SignOutButton signOutOptions={{ redirectUrl: '/' }}>
+                              <span className="block py-2 text-sm text-black cursor-pointer">Sign out</span>
+                            </SignOutButton>
+                          </SignedIn>
                         </div>
-                      )}
-                    </SignedOut>
+                      </div>
+                    )}
                   </li>
                 </ul>
               </nav>
