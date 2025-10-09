@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { productIds, email, phone, address, successUrl, cancelUrl } = await req.json();
+    const { productIds, email, phone, address, successUrl, cancelUrl, backendUserId } = await req.json();
     if (!Array.isArray(productIds) || productIds.length === 0) {
       return NextResponse.json({ error: "productIds is required" }, { status: 400 });
     }
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     const res = await fetch(`${base}/checkout`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productIds, email, phone, address: addressString, successUrl: derivedSuccess, cancelUrl: derivedCancel }),
+      body: JSON.stringify({ productIds, email, phone, address: addressString, successUrl: derivedSuccess, cancelUrl: derivedCancel, userId: backendUserId }),
       // Important: server-side fetch, no CORS from browser
     });
 

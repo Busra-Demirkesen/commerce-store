@@ -93,6 +93,12 @@ const Summary = () => {
           }
         : undefined;
 
+      const pm: any = (user as any)?.publicMetadata || {};
+      const pr: any = (user as any)?.privateMetadata || {};
+      const backendUserId = userId
+        ? (profiles[userId]?.backendUserId || pm.backendUserId || pm.userId || pm.backend_user_id || pr.backendUserId || pr.userId || pr.backend_user_id || "")
+        : "";
+
       if (!email) {
         toast.error("Please add an email to your profile");
         return;
@@ -115,6 +121,7 @@ const Summary = () => {
           email,
           phone,
           address: addr,
+          backendUserId,
         }),
       });
 
