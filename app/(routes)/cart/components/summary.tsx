@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { useAuth, useClerk } from "@clerk/nextjs";
+import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 import { apiBase } from "@/lib/api";
 
 import Button from "@/components/ui/button";
@@ -10,6 +10,7 @@ import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import useOrders from "@/hooks/use-orders";
 import toast from "react-hot-toast";
+import useProfile from "@/hooks/use-profile";
 
 const Summary = () => {
   const searchParams = useSearchParams();
@@ -18,6 +19,8 @@ const Summary = () => {
   const { isSignedIn, userId } = useAuth();
   const { openSignIn } = useClerk();
   const addOrder = useOrders((s) => s.add);
+  const { user } = useUser();
+  const profiles = useProfile((s) => s.profiles);
 
   // Derive a stable success flag and keep a guard to avoid loops
   const success = useMemo(() => searchParams?.get("success"), [searchParams]);
@@ -78,15 +81,32 @@ const Summary = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productIds: items.flatMap((line) => Array(line.quantity).fill(line.product.id)),
+          email: (user?.primaryEmailAddress as any)?.emailAddress || user?.emailAddresses?.[0]?.emailAddress || "",
+          phone:
+            (user as any)?.primaryPhoneNumber?.phoneNumber ||
+            (user as any)?.phoneNumbers?.[0]?.phoneNumber ||
+            (userId ? profiles[userId]?.phone : "") || "",
+          address: userId
+            ? {
+                line1: profiles[userId]?.addressLine1 || "",
+                line2: profiles[userId]?.addressLine2 || "",
+                city: profiles[userId]?.city || "",
+                state: profiles[userId]?.state || "",
+                postalCode: profiles[userId]?.postalCode || "",
+                country: profiles[userId]?.country || "",
+                deliveryNotes: profiles[userId]?.deliveryNotes || "",
+                fullName: profiles[userId]?.fullName || user?.fullName || "",
+              }
+            : undefined,
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({} as any));
 
       if (response.ok) {
-        window.location.href = data.url;
+        window.location.href = data.url; 
       } else {
-        toast.error(data.error || "Checkout failed!");
+        toast.error(String(data.error || data.message || "Checkout failed!"));
       }
     } catch (error) {
       console.error("Checkout network error:", error);
