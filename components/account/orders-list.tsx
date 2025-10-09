@@ -32,18 +32,48 @@ export default function OrdersList() {
     let cancelled = false;
     async function load() {
       if (!uid) { setRemoteOrders(null); return; }
-      if (!backendId) { setRemoteOrders([]); return; }
+      // backendId yoksa telefonla dene; her ikisini de deneriz
       setLoading(true);
       try {
-        const res = await fetch(`/api/orders?userId=${encodeURIComponent(backendId)}`, { cache: 'no-store' });
-        if (!cancelled) {
-          if (res.ok) {
-            const json = await res.json();
-            // Normalize possible shapes: array | {orders} | {data}
-            const arr = Array.isArray(json) ? json : (Array.isArray(json?.orders) ? json.orders : (Array.isArray(json?.data) ? json.data : []));
-            setRemoteOrders(arr);
+        const results: any[] = [];
+
+        async function fetchAndPush(url: string) {
+          const r = await fetch(url, { cache: 'no-store' });
+          if (r.ok) {
+            const j = await r.json();
+            const arr = Array.isArray(j) ? j : (Array.isArray(j?.orders) ? j.orders : (Array.isArray(j?.data) ? j.data : []));
+            results.push(...arr);
           }
-          else setRemoteOrders([]);
+        }
+
+        // 1) backendUserId varsa önce onu dene
+        if (backendId) {
+          await fetchAndPush(`/api/orders?userId=${encodeURIComponent(backendId)}`);
+          // Ödenmemişleri de dene (backend destekliyorsa)
+          if (results.length === 0) {
+            await fetchAndPush(`/api/orders?userId=${encodeURIComponent(backendId)}&isPaid=false`);
+          }
+        }
+
+        // 2) Telefonla dene (profil veya Clerk)
+        const profilePhone = uid ? (profiles[uid]?.phone || "") : "";
+        const clerkPhone = (user as any)?.primaryPhoneNumber?.phoneNumber || (user as any)?.phoneNumbers?.[0]?.phoneNumber || "";
+        const phone = profilePhone || clerkPhone;
+        if (results.length === 0 && phone) {
+          await fetchAndPush(`/api/orders?phone=${encodeURIComponent(phone)}`);
+          if (results.length === 0) {
+            await fetchAndPush(`/api/orders?phone=${encodeURIComponent(phone)}&isPaid=false`);
+          }
+        }
+
+        if (!cancelled) {
+          // Tekrarsızlaştır (id/_id/orderId’e göre)
+          const map = new Map<string, any>();
+          for (const o of results) {
+            const id = (o?.id || o?._id || o?.orderId || Math.random().toString(36).slice(2)) + "";
+            if (!map.has(id)) map.set(id, o);
+          }
+          setRemoteOrders(Array.from(map.values()));
         }
       } catch {
         if (!cancelled) setRemoteOrders([]);

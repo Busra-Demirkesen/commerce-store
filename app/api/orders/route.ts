@@ -7,7 +7,7 @@ export async function GET(req: Request) {
 
     const url = new URL(req.url);
     const qs = url.search ? url.search : "";
-    // Forward query (e.g., userId) to backend
+    // Forward query (e.g., userId, phone, isPaid, all) to backend
     const res = await fetch(`${base}/orders${qs}`, { method: "GET" });
     const data = await res.json().catch(() => ([]));
     return NextResponse.json(data, { status: res.status });
