@@ -20,7 +20,7 @@ export default async function ProductPage({ params }: PageProps) {
   
   if (!product) {
     return (
-      <div className="bg-white">
+      <div className="bg-[#FDF8F6]">
         <Container>
           <div className="px-4 py-10 sm:px-6 lg:px-8">
             <p className="text-sm text-gray-500">Product not found.</p>
@@ -35,7 +35,7 @@ export default async function ProductPage({ params }: PageProps) {
   });
 
   return (
-    <div className="bg-white">
+    <div className="bg-[#FDF8F6]">
       <Container>
         <div className="px-4 py-10 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">

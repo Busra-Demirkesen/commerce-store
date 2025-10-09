@@ -28,7 +28,7 @@ export default function RootLayout({
     <ClerkProvider>
       <SearchProvider> {}
         <html lang="en">
-          <body className={font.className}>
+          <body className={`${font.className} bg-[#FDF8F6] min-h-screen`}>
             <ModalProvider/>
             <ToastProvider/>
             <Navbar/>

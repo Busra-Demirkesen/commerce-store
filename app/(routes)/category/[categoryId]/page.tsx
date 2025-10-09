@@ -30,7 +30,7 @@ async function CategoryPage({ params, searchParams }: PageProps) {
   ]);
 
   return (
-    <div className="bg-white">
+    <div className="bg-[#FDF8F6]">
       <Container>
         {category?.billboard && <Billboard data={category.billboard} />}
 
