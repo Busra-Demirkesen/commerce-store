@@ -13,6 +13,7 @@ export type Profile = {
   postalCode?: string;
   country?: string;
   deliveryNotes?: string;
+  backendUserId?: string; // optional unique id from backend
 };
 
 type ProfileStore = {
@@ -32,6 +33,7 @@ const DEFAULT_PROFILE: Profile = {
   postalCode: "",
   country: "",
   deliveryNotes: "",
+  backendUserId: "",
 };
 
 const useProfile = create(
@@ -67,4 +69,3 @@ const useProfile = create(
 );
 
 export default useProfile;
-

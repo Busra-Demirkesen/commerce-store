@@ -7,6 +7,7 @@ export async function GET(req: Request) {
 
     const url = new URL(req.url);
     const qs = url.search ? url.search : "";
+    // Forward query (e.g., userId) to backend
     const res = await fetch(`${base}/orders${qs}`, { method: "GET" });
     const data = await res.json().catch(() => ([]));
     return NextResponse.json(data, { status: res.status });
@@ -14,4 +15,3 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Orders proxy failed", detail: String(e) }, { status: 500 });
   }
 }
-
