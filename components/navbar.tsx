@@ -23,7 +23,7 @@ const Navbar = async () =>{
 
     return(
         <>
-        <div className="border-b ">
+        <div className="border-b sticky top-0 z-50 bg-white">
             <Container>
                 {}
                 <div className="relative px-4 sm:px-6 lg:px-8 h-16 items-center grid grid-cols-3 md:grid-cols-3 lg:hidden">
