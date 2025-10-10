@@ -40,9 +40,15 @@ const Summary = () => {
     if (success && !handledRef.current) {
       handledRef.current = true;
       toast.success("Payment completed");
-      // Save order into DB for My Orders
+      // Save order into DB for My Orders (with local fallback)
       try {
-        const snapshot = itemsRef.current;
+        let snapshot: any = itemsRef.current as any;
+        if (!snapshot || snapshot.length === 0) {
+          try {
+            const raw = localStorage.getItem('last-order-snapshot');
+            if (raw) snapshot = JSON.parse(raw);
+          } catch {}
+        }
         if (snapshot && snapshot.length > 0) {
           const payload: any = {
             items: snapshot.map((l: any) => ({ product: l.product, quantity: l.quantity })),
@@ -62,31 +68,10 @@ const Summary = () => {
               profiles[userId]?.deliveryNotes ? `(Notes: ${profiles[userId]?.deliveryNotes})` : "",
             ].filter((p) => p && String(p).trim()).join(", ") : "",
           };
-          await fetch('/api/db/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          fetch('/api/db/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         }
       } catch {}
-      // Record a simple local order for "My Orders"
-      try {
-        let snapshot = itemsRef.current;
-        if (!snapshot || snapshot.length === 0) {
-          try {
-            const raw = localStorage.getItem('last-order-snapshot');
-            if (raw) snapshot = JSON.parse(raw);
-          } catch {}
-        }
-        const uid = userId || (user as any)?.id || "";
-        if (uid && snapshot && snapshot.length > 0) {
-          addOrder(uid, {
-            items: snapshot.map((l: any) => ({ product: l.product, quantity: l.quantity })),
-            total: snapshot.reduce(
-              (sum: number, l: any) => sum + Number(l.product.price) * l.quantity,
-              0
-            ),
-          });
-        }
-      } catch (e) {
-        // no-op if localStorage unavailable
-      }
+      
       try { localStorage.removeItem('last-order-snapshot'); } catch {}
       removeAll();
 
@@ -101,7 +86,7 @@ const Summary = () => {
     if (searchParams?.get("canceled")) {
       toast.error("Something went wrong");
     }
-  }, [success, removeAll, userId, addOrder, searchParams]);
+  }, [success, removeAll, userId , searchParams]);
 
   const totalPrice = items.reduce(
     (total, line) => total + Number(line.product.price) * line.quantity,
@@ -154,7 +139,7 @@ const Summary = () => {
         backendUserId,
       };
       if (origin) {
-        payload.successUrl = `${origin}/cart?success=1`;
+        payload.successUrl = `${origin}/cart?redirect_status=succeeded&session_id={CHECKOUT_SESSION_ID}`;
         payload.cancelUrl = `${origin}/cart?canceled=1`;
       }
       if (phone) payload.phone = phone;
