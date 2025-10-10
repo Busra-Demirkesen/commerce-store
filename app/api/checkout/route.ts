@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       if (!derivedCancel && origin) derivedCancel = `${origin}/cart?canceled=1`;
     } catch {}
 
-    // Backend Prisma schema expects address as a single string (Order.address: String?)
+    // Build optional address string only if address provided
     const addressString = (() => {
       if (!address) return "";
       if (typeof address === "string") return address;
@@ -43,10 +43,14 @@ export async function POST(req: Request) {
       }
     })();
 
+    const payload: any = { productIds, email, successUrl: derivedSuccess, cancelUrl: derivedCancel, userId: backendUserId };
+    if (phone) payload.phone = phone;
+    if (addressString) payload.address = addressString;
+
     const res = await fetch(`${base}/checkout`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productIds, email, phone, address: addressString, successUrl: derivedSuccess, cancelUrl: derivedCancel, userId: backendUserId }),
+      body: JSON.stringify(payload),
       // Important: server-side fetch, no CORS from browser
     });
 

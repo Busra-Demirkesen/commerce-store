@@ -103,26 +103,23 @@ const Summary = () => {
         toast.error("Please add an email to your profile");
         return;
       }
-      if (!phone) {
-        toast.error("Please add a phone number in Account > Contact details");
-        return;
-      }
-      if (!addr || !addr.line1) {
-        toast.error("Please add your address in Account > Contact details");
-        return;
-      }
+      // Phone and address are optional; only email is required.
 
       // Call our server route to avoid CORS and keep secrets server-side
+      const payload: any = {
+        productIds: items.flatMap((line) => Array(line.quantity).fill(line.product.id)),
+        email,
+        backendUserId,
+      };
+      if (phone) payload.phone = phone;
+      if (addr && (addr.line1 || addr.line2 || addr.city || addr.state || addr.postalCode || addr.country || addr.fullName || addr.deliveryNotes)) {
+        payload.address = addr;
+      }
+
       const response = await fetch(`/api/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          productIds: items.flatMap((line) => Array(line.quantity).fill(line.product.id)),
-          email,
-          phone,
-          address: addr,
-          backendUserId,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json().catch(() => ({} as any));

@@ -14,6 +14,7 @@ export default function OrdersList() {
   const localOrders = useMemo(() => ordersByUser[uid] || [], [ordersByUser, uid]);
   const [remoteOrders, setRemoteOrders] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const profiles = useProfile((s) => s.profiles);
   // Prefer profile backendUserId, then Clerk public/private metadata fallbacks
   const pm: any = (user as any)?.publicMetadata || {};
@@ -34,8 +35,10 @@ export default function OrdersList() {
       if (!uid) { setRemoteOrders(null); return; }
       // backendId yoksa telefonla dene; her ikisini de deneriz
       setLoading(true);
+      setErrorMsg(null);
       try {
         const results: any[] = [];
+        let usedUnfiltered = false;
 
         async function fetchAndPush(url: string) {
           const r = await fetch(url, { cache: 'no-store' });
@@ -43,6 +46,13 @@ export default function OrdersList() {
             const j = await r.json();
             const arr = Array.isArray(j) ? j : (Array.isArray(j?.orders) ? j.orders : (Array.isArray(j?.data) ? j.data : []));
             results.push(...arr);
+          } else if (r.status >= 400 && !errorMsg) {
+            try {
+              const j = await r.json();
+              setErrorMsg(String(j?.error || j?.message || `Request failed ${r.status}`));
+            } catch {
+              setErrorMsg(`Request failed ${r.status}`);
+            }
           }
         }
 
@@ -66,10 +76,53 @@ export default function OrdersList() {
           }
         }
 
+        // 3) E-posta ile dene (backend destekliyorsa)
+        const email = (user as any)?.primaryEmailAddress?.emailAddress || (user as any)?.emailAddresses?.[0]?.emailAddress || "";
+        if (results.length === 0 && email) {
+          await fetchAndPush(`/api/orders?email=${encodeURIComponent(email)}`);
+          if (results.length === 0) {
+            await fetchAndPush(`/api/orders?email=${encodeURIComponent(email)}&isPaid=false`);
+          }
+        }
+
+        // 4) Son çare: tüm siparişleri çek ve istemci tarafında filtrele (backend izin verirse)
+        if (results.length === 0) {
+          await fetchAndPush(`/api/orders?all=1`);
+          if (results.length === 0) {
+            await fetchAndPush(`/api/orders`);
+          }
+          if (results.length > 0) usedUnfiltered = true;
+        }
+
         if (!cancelled) {
           // Tekrarsızlaştır (id/_id/orderId’e göre)
+          // Gerekirse istemci tarafında filtrele (backendId / phone / email)
+          let finalList = results;
+          if (usedUnfiltered) {
+            const profilePhone = uid ? (profiles[uid]?.phone || "") : "";
+            const clerkPhone = (user as any)?.primaryPhoneNumber?.phoneNumber || (user as any)?.phoneNumbers?.[0]?.phoneNumber || "";
+            const phone = profilePhone || clerkPhone;
+
+            const norm = (s: any) => (typeof s === 'string' ? s.trim().toLowerCase() : '');
+            const normPhone = (s: any) => (typeof s === 'string' ? s.replace(/[^\d+]/g, '') : '');
+
+            const wantId = norm(backendId);
+            const wantEmail = norm(email);
+            const wantPhone = normPhone(phone);
+
+            finalList = results.filter((o: any) => {
+              const candsId = [o?.userId, o?.backendUserId, o?.customerId, o?.user_id, o?.customer_id].map(norm);
+              const candsEmail = [o?.email, o?.customerEmail, o?.buyerEmail].map(norm);
+              const candsPhone = [o?.phone, o?.customerPhone, o?.buyerPhone].map(normPhone);
+              const idOk = !!wantId && candsId.includes(wantId);
+              const emailOk = !!wantEmail && candsEmail.includes(wantEmail);
+              const phoneOk = !!wantPhone && candsPhone.includes(wantPhone);
+              return idOk || emailOk || phoneOk;
+            });
+          }
+
           const map = new Map<string, any>();
-          for (const o of results) {
+          for (const o of finalList) {
             const id = (o?.id || o?._id || o?.orderId || Math.random().toString(36).slice(2)) + "";
             if (!map.has(id)) map.set(id, o);
           }
@@ -102,6 +155,9 @@ export default function OrdersList() {
       ) : orders.length === 0 ? (
         <div className="mt-4 rounded-lg border border-gray-200 bg-white p-6">
           <p className="text-sm text-gray-600">No orders yet.</p>
+          {errorMsg ? (
+            <p className="mt-2 text-xs text-red-600">{errorMsg}</p>
+          ) : null}
         </div>
       ) : (
         <ul className="mt-6 space-y-4">
@@ -113,7 +169,7 @@ export default function OrdersList() {
             const id = o.id || o._id || o.orderId || Math.random().toString(36).slice(2);
             const count = items.reduce((s: number, l: any) => s + (l.quantity || l.qty || 0), 0) || (o.itemsCount || 0);
             return (
-            <li key={o.id} className="rounded-lg border border-gray-200 p-4">
+            <li key={id} className="rounded-lg border border-gray-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-500">#{id}</p>
