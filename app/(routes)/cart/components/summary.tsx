@@ -106,11 +106,16 @@ const Summary = () => {
       // Phone and address are optional; only email is required.
 
       // Call our server route to avoid CORS and keep secrets server-side
+      const origin = typeof window !== 'undefined' ? window.location.origin : '';
       const payload: any = {
         productIds: items.flatMap((line) => Array(line.quantity).fill(line.product.id)),
         email,
         backendUserId,
       };
+      if (origin) {
+        payload.successUrl = `${origin}/cart?success=1`;
+        payload.cancelUrl = `${origin}/cart?canceled=1`;
+      }
       if (phone) payload.phone = phone;
       if (addr && (addr.line1 || addr.line2 || addr.city || addr.state || addr.postalCode || addr.country || addr.fullName || addr.deliveryNotes)) {
         payload.address = addr;
