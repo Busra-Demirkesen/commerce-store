@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     const secret = process.env.STRIPE_SECRET_KEY || "";
     if (!secret) return NextResponse.json({ error: "Missing STRIPE_SECRET_KEY" }, { status: 500 });
 
-    const stripe = new Stripe(secret, { apiVersion: "2024-06-20" });
+    const stripe = new Stripe(secret);
 
     const body = await req.json();
     const sessionId: string | undefined = body?.sessionId || body?.session_id;
