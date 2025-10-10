@@ -8,7 +8,7 @@ import { apiBase } from "@/lib/api";
 import Button from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
-import useOrders from "@/hooks/use-orders";
+// orders persisted via backend DB now
 import toast from "react-hot-toast";
 import useProfile from "@/hooks/use-profile";
 
@@ -18,7 +18,7 @@ const Summary = () => {
   const removeAll = useCart((state) => state.removeAll);
   const { isSignedIn, userId } = useAuth();
   const { openSignIn } = useClerk();
-  const addOrder = useOrders((s) => s.add);
+  // removed local orders add
   const { user } = useUser();
   const profiles = useProfile((s) => s.profiles);
 
@@ -40,6 +40,31 @@ const Summary = () => {
     if (success && !handledRef.current) {
       handledRef.current = true;
       toast.success("Payment completed");
+      // Save order into DB for My Orders
+      try {
+        const snapshot = itemsRef.current;
+        if (snapshot && snapshot.length > 0) {
+          const payload: any = {
+            items: snapshot.map((l: any) => ({ product: l.product, quantity: l.quantity })),
+            total: snapshot.reduce((sum: number, l: any) => sum + Number(l.product.price) * l.quantity, 0),
+            email: (user?.primaryEmailAddress as any)?.emailAddress || user?.emailAddresses?.[0]?.emailAddress || "",
+            phone:
+              (user as any)?.primaryPhoneNumber?.phoneNumber ||
+              (user as any)?.phoneNumbers?.[0]?.phoneNumber ||
+              (userId ? profiles[userId]?.phone : "") || "",
+            address: userId ? [
+              profiles[userId]?.fullName,
+              profiles[userId]?.addressLine1,
+              profiles[userId]?.addressLine2,
+              [profiles[userId]?.postalCode, profiles[userId]?.city].filter(Boolean).join(" "),
+              profiles[userId]?.state,
+              profiles[userId]?.country,
+              profiles[userId]?.deliveryNotes ? `(Notes: ${profiles[userId]?.deliveryNotes})` : "",
+            ].filter((p) => p && String(p).trim()).join(", ") : "",
+          };
+          await fetch('/api/db/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        }
+      } catch {}
       // Record a simple local order for "My Orders"
       try {
         let snapshot = itemsRef.current;
