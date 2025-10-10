@@ -23,7 +23,15 @@ const Summary = () => {
   const profiles = useProfile((s) => s.profiles);
 
   // Derive a stable success flag and keep a guard to avoid loops
-  const success = useMemo(() => searchParams?.get("success"), [searchParams]);
+  const success = useMemo(() => {
+    const s = searchParams?.get("success");
+    const rs = searchParams?.get("redirect_status");
+    const sid = searchParams?.get("session_id");
+    if (s) return s;
+    if (rs && rs.toLowerCase() === "succeeded") return "1";
+    if (sid) return "1";
+    return null;
+  }, [searchParams]);
   const handledRef = useRef(false);
   const itemsRef = useRef(items);
   useEffect(() => { itemsRef.current = items; }, [items]);
@@ -34,12 +42,19 @@ const Summary = () => {
       toast.success("Payment completed");
       // Record a simple local order for "My Orders"
       try {
-        const snapshot = itemsRef.current;
-        if (userId && snapshot.length > 0) {
-          addOrder(userId, {
-            items: snapshot.map((l) => ({ product: l.product, quantity: l.quantity })),
+        let snapshot = itemsRef.current;
+        if (!snapshot || snapshot.length === 0) {
+          try {
+            const raw = localStorage.getItem('last-order-snapshot');
+            if (raw) snapshot = JSON.parse(raw);
+          } catch {}
+        }
+        const uid = userId || (user as any)?.id || "";
+        if (uid && snapshot && snapshot.length > 0) {
+          addOrder(uid, {
+            items: snapshot.map((l: any) => ({ product: l.product, quantity: l.quantity })),
             total: snapshot.reduce(
-              (sum, l) => sum + Number(l.product.price) * l.quantity,
+              (sum: number, l: any) => sum + Number(l.product.price) * l.quantity,
               0
             ),
           });
@@ -47,6 +62,7 @@ const Summary = () => {
       } catch (e) {
         // no-op if localStorage unavailable
       }
+      try { localStorage.removeItem('last-order-snapshot'); } catch {}
       removeAll();
 
       // Remove success param to prevent re-processing on re-render
@@ -120,6 +136,11 @@ const Summary = () => {
       if (addr && (addr.line1 || addr.line2 || addr.city || addr.state || addr.postalCode || addr.country || addr.fullName || addr.deliveryNotes)) {
         payload.address = addr;
       }
+
+      // Persist a last snapshot locally to recover after redirect
+      try {
+        localStorage.setItem('last-order-snapshot', JSON.stringify(items));
+      } catch {}
 
       const response = await fetch(`/api/checkout`, {
         method: "POST",
