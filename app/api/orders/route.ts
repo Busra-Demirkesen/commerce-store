@@ -6,11 +6,24 @@ export async function GET(req: Request) {
     if (!base) return NextResponse.json({ error: "API base missing" }, { status: 500 });
 
     const url = new URL(req.url);
-    const qs = url.search ? url.search : "";
-    // Forward query (e.g., userId, phone, isPaid, all) to backend
-    const res = await fetch(`${base}/orders${qs}`, { method: "GET" });
-    const data = await res.json().catch(() => ([]));
-    return NextResponse.json(data, { status: res.status });
+    const incoming = url.searchParams;
+    // Only forward backend‑supported filters to reduce 404s
+    const params = new URLSearchParams();
+    const userId = incoming.get("userId");
+    const phone = incoming.get("phone");
+    const isPaid = incoming.get("isPaid");
+    if (userId) params.set("userId", userId);
+    if (phone) params.set("phone", phone);
+    if (isPaid) params.set("isPaid", isPaid);
+
+    const path = params.toString() ? `${base}/orders?${params.toString()}` : `${base}/orders`;
+    const res = await fetch(path, { method: "GET" });
+
+    // Attempt JSON; if fails, try text passthrough
+    const text = await res.text();
+    let payload: any;
+    try { payload = JSON.parse(text); } catch { payload = text || []; }
+    return NextResponse.json(payload, { status: res.status });
   } catch (e: any) {
     return NextResponse.json({ error: "Orders proxy failed", detail: String(e) }, { status: 500 });
   }
