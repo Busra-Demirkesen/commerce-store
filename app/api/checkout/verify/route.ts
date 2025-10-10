@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const secret = process.env.STRIPE_SECRET_KEY || "";
@@ -60,4 +60,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Verify failed", detail: String(e?.message || e) }, { status: 500 });
   }
 }
-
+export const runtime = 'nodejs';
