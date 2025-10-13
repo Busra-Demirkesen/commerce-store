@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 
 export async function GET() {
   try {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const list = await prisma.favorite.findMany({ where: { userId }, orderBy: { createdAt: 'desc' } })
     return NextResponse.json(list)
@@ -15,7 +15,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const { productId } = await req.json()
     if (!productId) return NextResponse.json({ error: 'productId required' }, { status: 400 })
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const url = new URL(req.url)
     const productId = url.searchParams.get('productId')
