@@ -12,15 +12,28 @@ export default function OrdersList() {
   useEffect(() => {
     let cancelled = false;
     async function load() {
-      if (!user?.id) { setOrders([]); return; }
+      if (!user?.id) { 
+        console.log("User ID not available.", { userId: user?.id });
+        setOrders([]); 
+        return; 
+      }
       setLoading(true);
+      console.log("Fetching orders for user:", user.id);
       try {
         const r = await fetch('/api/db/orders', { cache: 'no-store' });
+        console.log("API response status:", r.status, "ok:", r.ok);
         if (r.ok) {
           const j = await r.json();
+          console.log("API response data:", j);
           if (!cancelled) setOrders(Array.isArray(j) ? j : []);
-        } else if (!cancelled) setOrders([]);
-      } catch { if (!cancelled) setOrders([]); }
+        } else {
+          console.error("Failed to fetch orders:", r.statusText);
+          if (!cancelled) setOrders([]);
+        }
+      } catch (e: any) {
+        console.error("Error fetching orders:", e);
+        if (!cancelled) setOrders([]);
+      }
       finally { if (!cancelled) setLoading(false); }
     }
     load();
