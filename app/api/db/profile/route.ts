@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 
 export async function GET() {
   try {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const profile = await prisma.profile.findUnique({ where: { userId } })
@@ -16,7 +16,7 @@ export async function GET() {
 
 export async function PUT(req: Request) {
   try {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const data = await req.json()
