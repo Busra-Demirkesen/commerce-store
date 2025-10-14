@@ -75,17 +75,18 @@ export async function POST(req: Request) {
     if (order.email) {
       try {
         await resend.emails.send({
-          from: 'onboarding@resend.dev', // Bu adresi Resend'de doğruladığınız bir gönderen adresiyle değiştirmeniz gerekebilir
+          from: 'onboarding@resend.dev', // TODO: Admin epossatıyla değiştir 
           to: order.email,
-          subject: `Siparişiniz Onaylandı! #${order.id}`,
-          html: `<h1>Siparişiniz İçin Teşekkürler!</h1>
-                 <p>Sipariş Numaranız: <strong>${order.id}</strong></p>
-                 <p>Toplam Tutar: <strong>${order.total.toFixed(2)} TL</strong></p>
-                 <p>Ürünleriniz:</p>
+          subject: `Your Order Has Been Confirmed! #${order.id}`,
+          html: `<h1>Thank You for Your Order!</h1>
+                 <p>Your Order Number: <strong>${order.id}</strong></p>
+                 <p>Total Amount: <strong>${order.total.toFixed(2)} TL</strong></p>
+                 <p>Your Items:</p>
                  <ul>
                    ${order.items.map(item => `<li>${item.productName} (x${item.quantity}) - ${item.price.toFixed(2)} TL</li>`).join('')}
                  </ul>
-                 <p>Yakında kargoya verilecektir.</p>`,
+                 <p>Your order will be shipped soon.</p>`
+          ,
         });
         console.log("API DB Orders POST: Order confirmation email sent to", order.email);
       } catch (emailError: any) {
