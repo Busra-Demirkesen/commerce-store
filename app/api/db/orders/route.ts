@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import prisma from '@/lib/prisma'
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function GET() {
   try {
@@ -68,6 +71,28 @@ export async function POST(req: Request) {
       include: { items: true },
     })
     console.log("API DB Orders POST: Order created successfully", order);
+
+    if (order.email) {
+      try {
+        await resend.emails.send({
+          from: 'onboarding@resend.dev', // Bu adresi Resend'de doğruladığınız bir gönderen adresiyle değiştirmeniz gerekebilir
+          to: order.email,
+          subject: `Siparişiniz Onaylandı! #${order.id}`,
+          html: `<h1>Siparişiniz İçin Teşekkürler!</h1>
+                 <p>Sipariş Numaranız: <strong>${order.id}</strong></p>
+                 <p>Toplam Tutar: <strong>${order.total.toFixed(2)} TL</strong></p>
+                 <p>Ürünleriniz:</p>
+                 <ul>
+                   ${order.items.map(item => `<li>${item.productName} (x${item.quantity}) - ${item.price.toFixed(2)} TL</li>`).join('')}
+                 </ul>
+                 <p>Yakında kargoya verilecektir.</p>`,
+        });
+        console.log("API DB Orders POST: Order confirmation email sent to", order.email);
+      } catch (emailError: any) {
+        console.error("API DB Orders POST: Failed to send email:", emailError);
+      }
+    }
+
     return NextResponse.json(order, { status: 201 })
   } catch (e: any) {
     console.error("API DB Orders POST Error:", e);
