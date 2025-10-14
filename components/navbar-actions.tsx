@@ -24,20 +24,20 @@ const NavbarActions = () => {
       {/* Favorites */}
       <SignedIn>
         <Button onClick={() => router.push("/favorites")} className="flex items-center rounded-full bg-black px-2 py-1 md:px-3 md:py-1.5">
-          <Heart size={16} className="md:size-20" color="white" />
+          <Heart size={16} className="lg:size-20" color="white" />
         </Button>
       </SignedIn>
       <SignedOut>
         <SignUpButton mode="modal">
           <Button className="flex items-center rounded-full bg-black px-2 py-1 md:px-3 md:py-1.5">
-            <Heart size={16} className="md:size-20" color="white" />
+            <Heart size={16} className="lg:size-20" color="white" />
           </Button>
         </SignUpButton>
       </SignedOut>
 
       {/* Cart */}
       <Button onClick={() => router.push("/cart")} className="flex items-center rounded-full bg-black px-2 py-1 md:px-3 md:py-1.5">
-        <ShoppingBag size={16} className="md:size-20" color="white" />
+        <ShoppingBag size={16} className="lg:size-20" color="white" />
         <span className="ml-2 text-sm font-medium text-white hidden md:block">{cart.count()}</span>
         <span className="ml-1 text-sm font-medium text-white md:hidden">{cart.count()}</span>
       </Button>
@@ -50,7 +50,7 @@ const NavbarActions = () => {
             className="flex items-center rounded-full bg-black px-2 py-1 md:px-3 md:py-1.5 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             aria-expanded={isDropdownOpen ? "true" : "false"}
           >
-            <User size={16} className="md:size-20" color="white" />
+            <User size={16} className="lg:size-20" color="white" />
           </Button>
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 rounded-md bg-white py-2 shadow-lg z-10">
@@ -74,7 +74,7 @@ const NavbarActions = () => {
             className="flex items-center rounded-full bg-black px-2 py-1 md:px-3 md:py-1.5 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             aria-expanded={isDropdownOpen ? "true" : "false"}
           >
-            <User size={16} className="md:size-20" color="white" />
+            <User size={16} className="lg:size-20" color="white" />
           </Button>
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 rounded-md bg-white py-2 shadow-lg z-10">
