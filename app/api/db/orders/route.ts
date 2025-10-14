@@ -15,6 +15,7 @@ export async function GET() {
 
     return NextResponse.json(orders)
   } catch (e: any) {
+    console.error("API DB Orders GET Error:", e);
     return NextResponse.json({ error: 'DB error', detail: String(e?.message || e) }, { status: 500 })
   }
 }
