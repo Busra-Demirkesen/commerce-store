@@ -6,7 +6,7 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // TODO: Resend'de doğruladığınız kendi e-posta adresinizi buraya girin
-const SENDER_EMAIL = 'busraokumus@msn.com'; 
+const SENDER_EMAIL = 'onboarding@resend.dev'; 
 
 export async function GET() {
   try {
