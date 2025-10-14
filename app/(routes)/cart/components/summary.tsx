@@ -19,8 +19,8 @@ const Summary = () => {
   const { isSignedIn, userId } = useAuth();
   const { openSignIn } = useClerk();
   // removed local orders add
-  const { user } = useUser();
-  console.log("Summary Component: useUser() user obj:", user);
+  const { user, isLoaded } = useUser();
+  console.log("Summary Component: useUser() user obj:", user, "isLoaded:", isLoaded);
   const profiles = useProfile((s) => s.profiles);
 
   // Derive a stable success flag and keep a guard to avoid loops
@@ -38,6 +38,7 @@ const Summary = () => {
   useEffect(() => { itemsRef.current = items; }, [items]);
 
   useEffect(() => {
+    if (!isLoaded) return; // Kullanıcı verisi yüklenene kadar bekleyin
     if (success && !handledRef.current) {
       handledRef.current = true;
       toast.success("Payment completed");
@@ -51,10 +52,12 @@ const Summary = () => {
           } catch {}
         }
         if (snapshot && snapshot.length > 0) {
+          const email = user?.emailAddresses?.[0]?.emailAddress || "";
+          console.log("Summary Component: Derived email for payload (useEffect)", email);
           const payload: any = {
             items: snapshot.map((l: any) => ({ product: l.product, quantity: l.quantity })),
             total: snapshot.reduce((sum: number, l: any) => sum + Number(l.product.price) * l.quantity, 0),
-            email: user?.emailAddresses?.[0]?.emailAddress || "", // Doğrudan emailAddresses dizisinden al
+            email: email,
             // console.log("Summary Component: Derived email for payload (useEffect)", payload.email);
             phone:
               (user as any)?.primaryPhoneNumber?.phoneNumber ||
@@ -88,7 +91,7 @@ const Summary = () => {
     if (searchParams?.get("canceled")) {
       toast.error("Something went wrong");
     }
-  }, [success, removeAll, userId , searchParams]);
+  }, [success, removeAll, userId , searchParams, isLoaded, user]); // isLoaded ve user eklendi
 
   const totalPrice = items.reduce(
     (total, line) => total + Number(line.product.price) * line.quantity,
@@ -103,7 +106,7 @@ const Summary = () => {
         return;
       }
 
-      const email = user?.emailAddresses?.[0]?.emailAddress || ""; // Doğrudan emailAddresses dizisinden al
+      const email = user?.emailAddresses?.[0]?.emailAddress || "";
       console.log("Summary Component: Derived email for checkout (onCheckout)", email);
       const phone =
         (user as any)?.primaryPhoneNumber?.phoneNumber ||
