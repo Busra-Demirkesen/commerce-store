@@ -5,6 +5,9 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// TODO: Resend'de doğruladığınız kendi e-posta adresinizi buraya girin
+const SENDER_EMAIL = 'busraokumus@msn.com'; 
+
 export async function GET() {
   try {
     const { userId } = await auth()
@@ -75,7 +78,7 @@ export async function POST(req: Request) {
     if (order.email) {
       try {
         await resend.emails.send({
-          from: 'onboarding@resend.dev', // TODO: Admin epossatıyla değiştir 
+          from: SENDER_EMAIL, 
           to: order.email,
           subject: `Your Order Has Been Confirmed! #${order.id}`,
           html: `<h1>Thank You for Your Order!</h1>
