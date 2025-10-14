@@ -5,14 +5,19 @@ import prisma from '@/lib/prisma'
 export async function GET() {
   try {
     const { userId } = await auth()
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    console.log("API DB Orders GET: userId received", userId);
+    if (!userId) {
+      console.log("API DB Orders GET: Unauthorized - userId is null or undefined.");
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
 
+    console.log("API DB Orders GET: Fetching orders for userId", userId);
     const orders = await prisma.order.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
       include: { items: true },
     })
-
+    console.log("API DB Orders GET: Orders fetched successfully. Count:", orders.length);
     return NextResponse.json(orders)
   } catch (e: any) {
     console.error("API DB Orders GET Error:", e);
