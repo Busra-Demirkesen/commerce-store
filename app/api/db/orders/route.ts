@@ -76,6 +76,7 @@ export async function POST(req: Request) {
     console.log("API DB Orders POST: Order created successfully", order);
 
     if (order.email) {
+      console.log("API DB Orders POST: Attempting to send email to", order.email);
       try {
         await resend.emails.send({
           from: SENDER_EMAIL, 
@@ -95,6 +96,8 @@ export async function POST(req: Request) {
       } catch (emailError: any) {
         console.error("API DB Orders POST: Failed to send email:", emailError);
       }
+    } else {
+      console.log("API DB Orders POST: No email provided for order, skipping email send.");
     }
 
     return NextResponse.json(order, { status: 201 })
