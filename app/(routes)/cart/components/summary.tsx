@@ -54,7 +54,7 @@ const Summary = () => {
           const payload: any = {
             items: snapshot.map((l: any) => ({ product: l.product, quantity: l.quantity })),
             total: snapshot.reduce((sum: number, l: any) => sum + Number(l.product.price) * l.quantity, 0),
-            email: user?.primaryEmailAddress?.emailAddress || user?.emailAddresses?.[0]?.emailAddress || "", // Doğrudan atama
+            email: user?.emailAddresses?.[0]?.emailAddress || "", // Doğrudan emailAddresses dizisinden al
             // console.log("Summary Component: Derived email for payload (useEffect)", payload.email);
             phone:
               (user as any)?.primaryPhoneNumber?.phoneNumber ||
@@ -103,7 +103,7 @@ const Summary = () => {
         return;
       }
 
-      const email = user?.primaryEmailAddress?.emailAddress || user?.emailAddresses?.[0]?.emailAddress || ""; // Doğrudan atama
+      const email = user?.emailAddresses?.[0]?.emailAddress || ""; // Doğrudan emailAddresses dizisinden al
       console.log("Summary Component: Derived email for checkout (onCheckout)", email);
       const phone =
         (user as any)?.primaryPhoneNumber?.phoneNumber ||
