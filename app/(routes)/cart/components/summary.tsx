@@ -20,6 +20,7 @@ const Summary = () => {
   const { openSignIn } = useClerk();
   // removed local orders add
   const { user } = useUser();
+  console.log("Summary Component: useUser() user obj:", user);
   const profiles = useProfile((s) => s.profiles);
 
   // Derive a stable success flag and keep a guard to avoid loops
@@ -54,6 +55,7 @@ const Summary = () => {
             items: snapshot.map((l: any) => ({ product: l.product, quantity: l.quantity })),
             total: snapshot.reduce((sum: number, l: any) => sum + Number(l.product.price) * l.quantity, 0),
             email: (user?.primaryEmailAddress as any)?.emailAddress || user?.emailAddresses?.[0]?.emailAddress || "",
+            // console.log("Summary Component: Derived email for payload (useEffect)", payload.email);
             phone:
               (user as any)?.primaryPhoneNumber?.phoneNumber ||
               (user as any)?.phoneNumbers?.[0]?.phoneNumber ||
@@ -102,6 +104,7 @@ const Summary = () => {
       }
 
       const email = (user?.primaryEmailAddress as any)?.emailAddress || user?.emailAddresses?.[0]?.emailAddress || "";
+      console.log("Summary Component: Derived email for checkout (onCheckout)", email);
       const phone =
         (user as any)?.primaryPhoneNumber?.phoneNumber ||
         (user as any)?.phoneNumbers?.[0]?.phoneNumber ||
