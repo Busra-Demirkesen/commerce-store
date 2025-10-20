@@ -39,8 +39,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ data }) => {
 
           {}
           <div className="relative h-full w-72 max-w-[80%] bg-white shadow-xl flex flex-col">
-            <div className="flex items-center justify-between px-4 py-4 border-b">
-              <span className="font-semibold">Categories</span>
+            <div className="flex items-center justify-end px-4 py-4 border-b">
               <button
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
